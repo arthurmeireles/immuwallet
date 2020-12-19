@@ -66,14 +66,24 @@ class HorarioFuncionamento(models.Model):
 
 
 class Usuario(AbstractUser):
-    pass
+
+    @property
+    def eh_coordenador(self):
+        return Perfil.objects.filter(usuario=self, tipo=Perfil.COORDENADOR).exists()
+
+    @property
+    def eh_paciente(self):
+        return Perfil.objects.filter(usuario=self, tipo=Perfil.PACIENTE).exists()
 
 
 class Perfil(models.Model):
+    PACIENTE = 0
+    PROFISSIONAL = 1
+    COORDENADOR = 2
     choices = (
-        (0, u'Paciente'),
-        (1, u'Profissional'),
-        (2, u'Coordenador do SUS'),
+        (PACIENTE, u'Paciente'),
+        (PROFISSIONAL, u'Profissional'),
+        (COORDENADOR, u'Coordenador do SUS'),
     )
     tipo = models.IntegerField(choices=choices)
     estabelecimento = models.ForeignKey(Estabelecimento, on_delete=models.CASCADE)
@@ -95,15 +105,18 @@ class Vacina(models.Model):
     nome = models.CharField(max_length=60, blank=True)
     tempo_aplicacao = models.IntegerField(verbose_name="Tempo de aplicação (minutos)", default=15)
 
-    def __unicode__(self):
+    def __str__(self):
         return f'{self.nome} ({self.codigo})'
 
 
 class HoraMarcada(models.Model):
+    MARCADO = 0
+    CONCLUIDO = 1
+    CANCELADO = 2
     status_choices = (
-        (0, u'Marcado'),
-        (1, u'Concluído'),
-        (2, u'Cancelado'),
+        (MARCADO, u'Marcado'),
+        (CONCLUIDO, u'Concluído'),
+        (CANCELADO, u'Cancelado'),
     )
     data = models.DateTimeField()
     status = models.IntegerField(choices=status_choices)
@@ -111,7 +124,7 @@ class HoraMarcada(models.Model):
     vacina = models.ForeignKey(Vacina, on_delete=models.CASCADE)
     estabelecimento = models.ForeignKey(Estabelecimento, on_delete=models.CASCADE)
     paciente = models.ForeignKey(Usuario, related_name='horas_paciente', on_delete=models.CASCADE)
-    atendente = models.ForeignKey(Usuario, related_name='horas_atendente', on_delete=models.CASCADE)
+    atendente = models.ForeignKey(Usuario, related_name='horas_atendente', null=True, on_delete=models.CASCADE)
 
     marcado_em = models.DateTimeField(auto_now_add=True)
 
@@ -120,14 +133,15 @@ class HoraMarcada(models.Model):
 
 
 class VacinaEstocada(models.Model):
-    data = models.DateTimeField(auto_now_add=True)
+    data = models.DateTimeField()
     quantidade = models.IntegerField()
     quantidade_atual = models.IntegerField(null=True)
     vacina = models.ForeignKey(Vacina, on_delete=models.CASCADE)
     estabelecimento = models.ForeignKey(Estabelecimento, on_delete=models.CASCADE)
-    hora_marcada = models.ForeignKey(HoraMarcada, null=True, on_delete=models.CASCADE)
 
-    def __unicode__(self):
+    cadastrado_em = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
         return f'{self.quantidade} {self.vacina}'
 
 

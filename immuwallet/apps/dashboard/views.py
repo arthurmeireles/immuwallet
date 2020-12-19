@@ -15,19 +15,20 @@ from django.shortcuts import render, redirect, resolve_url, get_object_or_404
 from django.views import View
 from django.views.generic.base import TemplateView
 
-from dashboard.forms import Login, PesquisaUsuarioForm, UsuarioForm, CadastrarUsuarioForm
+from dashboard.forms import Login, PesquisaUsuarioForm, UsuarioForm, CadastrarUsuarioForm, VacinaEstocadaForm, \
+    HoraMarcadaForm
 from dashboard.models import Usuario
 
 
 def login_page(request):
-    next = None
+    next_page = None
     if request.GET and 'next' in request.GET.keys():
-        next = request.GET['next']
+        next_page = request.GET['next']
 
     if request.user.is_authenticated:
-        if next != None:
-            return HttpResponseRedirect(next)
-        return redirect(resolve_url('dashboard:dashboard-index'))
+        if next_page is not None:
+            return HttpResponseRedirect(next_page)
+        return redirect(resolve_url('dashboard:index'))
 
     if request.method == "POST":
         form = Login(request.POST)
@@ -46,8 +47,8 @@ def login_page(request):
             if user is not None and user.is_active:
                 login(request, user)
 
-                if next:
-                    return HttpResponseRedirect(next)
+                if next_page:
+                    return HttpResponseRedirect(next_page)
                 return redirect(resolve_url('dashboard:index'))
             else:
                 messages.warning(request, 'Usuário ou senha inválidos!')
@@ -107,7 +108,7 @@ def processar_datatables(request, queryset, columns, **kwargs):
             order[int(re.search('\d+', column).group(0))] = columns[int(request.POST[column])]
 
     # Pega a ordem de ordenação
-    if order == []:
+    if not order:
         order = []
         for column in columns:
             if column in exclude:
@@ -176,10 +177,20 @@ class ListaUsuariosView(LoginRequiredMixin, View):
 
     def post(self, request):
         form = PesquisaUsuarioForm(request.POST or None, usuario=request.user)
-        return processar_datatables(request, form.pesquisar(request.user),
+        return processar_datatables(request, form.pesquisar(),
                                     ['first_name', 'last_name', 'email', 'id'],
                                     exclude=['id', 'is_active'],
                                     )
+
+
+@login_required
+def agendar_view(request):
+    form = HoraMarcadaForm(request.POST or None, usuario=request.user)
+
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return redirect(resolve_url('dashboard:sucesso'))
+    return render(request, 'dashboard/agendar.html', locals())
 
 
 @login_required
@@ -204,6 +215,16 @@ def cadastrar_usuario_view(request):
                 messages.warning(request, form.errors[error])
 
     return render(request, 'dashboard/cadastrar_usuario.html', locals())
+
+
+@login_required
+def cadastrar_vacina_estocada_view(request):
+    form = VacinaEstocadaForm(request.POST or None)
+
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return redirect(resolve_url('dashboard:sucesso'))
+    return render(request, 'dashboard/cadastro_vacina_estocada.html', locals())
 
 
 class SucessoView(LoginRequiredMixin, TemplateView):

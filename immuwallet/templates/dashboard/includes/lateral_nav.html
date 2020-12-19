@@ -2,21 +2,35 @@
 <div class="left_col scroll-view">
     <div class="navbar nav_title" style="border: 0;">
         <a href="/dashboard" class="site_title">
-            <img src="{% static 'assets/img/ufrn.png' %}" alt="" class="img-responsive center-block img-logo" />
+            <img src="{% static 'assets/img/ufrn.png' %}" alt="" class="img-responsive center-block img-logo"/>
         </a>
     </div>
-    <div class="clearfix">
-    </div>
+    <div class="clearfix"></div>
     <!-- sidebar menu -->
     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
         <div class="menu_section">
             <ul class="nav side-menu">
                 <li>
-                    <a href="{% url 'dashboard:index' %}" style="color: #424242;"><i class="fa fa-home aux-menu"></i> Início</a>
+                    <a href="{% url 'dashboard:index' %}" style="color: #424242;">
+                        <i class="fa fa-home aux-menu"></i> Início</a>
                 </li>
                 <li>
-                    <a href="{% url 'dashboard:gerenciar_usuarios' %}" style="color: #424242;"><i class="fa fa-gear aux-menu"></i>Gerenciar usuários</a>
+                    <a href="{% url 'dashboard:agendar' %}" style="color: #424242;">
+                        <i class="fa fa-home aux-menu"></i> Agendar atendimento</a>
                 </li>
+                {% if request.user.eh_coordenador %}
+                    <li>
+                        <a href="{% url 'dashboard:gerenciar_usuarios' %}" style="color: #424242;">
+                            <i class="fa fa-gear aux-menu"></i>Gerenciar usuários</a>
+                    </li>
+                {% endif %}
+
+                {% if not request.user.eh_paciente %}
+                    <li>
+                        <a href="{% url 'dashboard:cadastrar_vacina_estocada' %}" style="color: #424242;">
+                            <i class="fa fa-database aux-menu"></i>Cadastrar estoque</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </div>

@@ -12,7 +12,7 @@
             <li class="dropdown dropdown-custom">
                 <a href="#" class="dropdown-toggle hover-pai-blue" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                     <div class="hover-filho-blue">{{request.user.username}}<br>
-                    <p>{{request.user.perfil.tipo}}
+                    <p>{{request.user.perfil.get_tipo_display}}
                         <span class="glyphicon glyphicon-chevron-down hover-filho-blue" style="margin-left: 10px;"></span>
                     </p>
                     </div>

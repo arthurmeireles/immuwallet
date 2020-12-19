@@ -7,7 +7,7 @@ from crispy_forms.layout import Div, Field, Layout, Submit
 from django import forms
 from localflavor.br.forms import BRCPFField
 
-from dashboard.models import Usuario, Perfil, Estabelecimento
+from dashboard.models import Usuario, Perfil, Estabelecimento, Vacina, VacinaEstocada, HoraMarcada
 
 
 class BRCPFFieldUnique(BRCPFField):
@@ -23,7 +23,7 @@ class BRCPFFieldUnique(BRCPFField):
         super(BRCPFFieldUnique, self).__init__(*args, **kwargs)
 
     def clean(self, value):
-        value = re.sub("[-\.]", "", value)
+        value = re.sub("[-.]", "", value)
 
         if value == '00000000000':
             return value
@@ -82,7 +82,7 @@ class PesquisaUsuarioForm(forms.Form):
             FormActions(Submit('submit', 'Pesquisar', css_class='pull-right')),
         )
 
-    def pesquisar(self, usuario):
+    def pesquisar(self):
         usuario_list = Usuario.objects.all()
 
         if self.is_valid():
@@ -235,3 +235,118 @@ class CadastrarUsuarioForm(forms.Form):
         usuario.save()
 
         return usuario
+
+
+class VacinaEstocadaForm(forms.Form):
+    vacina = forms.ModelChoiceField(
+        required=True,
+        queryset=Vacina.objects.all(),
+        widget=forms.Select(),
+        empty_label='Selecionar',
+    )
+    estabelecimento = forms.ModelChoiceField(
+        required=True,
+        queryset=Estabelecimento.objects.all(),
+        widget=forms.Select(),
+        empty_label='Selecionar',
+    )
+    quantidade = forms.IntegerField(required=True)
+    data = forms.DateTimeField(required=True)
+
+    def __init__(self, *args, **kwargs):
+        super(VacinaEstocadaForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_method = 'POST'
+        self.helper.form_class = 'form-horizontal'
+
+        self.helper.layout = Layout(
+            Div(
+                Div(
+                    Field('vacina', css_class="form-control"),
+                    css_class="col-md-4 col-lg-6 col-xs-12"
+                ),
+                Div(
+                    Field('estabelecimento', css_class="form-control"),
+                    css_class="col-md-4 col-lg-6 col-xs-12"
+                ),
+                css_class="row"
+            ),
+            Div(
+                Div(
+                    Field('quantidade', css_class="form-control"),
+                    css_class="col-md-6 col-lg-6 col-xs-12"
+                ),
+                Div(
+                    Field('data', css_class="form-control"),
+                    css_class="col-md-6 col-lg-6 col-xs-12"
+                ),
+                css_class="row"
+            ),
+            FormActions(Submit('submit', 'Salvar', css_class='pull-right')),
+        )
+
+    def save(self):
+        vacina = VacinaEstocada(**self.cleaned_data)
+        vacina.save()
+
+        return vacina
+
+
+class HoraMarcadaForm(forms.Form):
+    vacina = forms.ModelChoiceField(
+        required=True,
+        queryset=Vacina.objects.all(),
+        widget=forms.Select(),
+        empty_label='Selecionar',
+    )
+    estabelecimento = forms.ModelChoiceField(
+        required=True,
+        queryset=Estabelecimento.objects.all(),
+        widget=forms.Select(),
+        empty_label='Selecionar',
+    )
+    data = forms.DateTimeField(required=True)
+
+    def __init__(self, *args, **kwargs):
+        if 'usuario' in kwargs.keys():
+            self.usuario = kwargs.pop("usuario")
+
+        super(HoraMarcadaForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_method = 'POST'
+        self.helper.form_class = 'form-horizontal'
+
+        self.helper.layout = Layout(
+            Div(
+                Div(
+                    Field('vacina', css_class="form-control"),
+                    css_class="col-md-4 col-lg-4 col-xs-12"
+                ),
+                Div(
+                    Field('estabelecimento', css_class="form-control"),
+                    css_class="col-md-4 col-lg-4 col-xs-12"
+                ),
+                Div(
+                    Field('data', css_class="form-control"),
+                    css_class="col-md-4 col-lg-4 col-xs-12"
+                ),
+                css_class="row"
+            ),
+            FormActions(Submit('submit', 'Salvar', css_class='pull-right')),
+        )
+
+    def clean_data(self):
+        # if Usuario.objects.filter(email=self.cleaned_data['email']).exists():
+        #     raise forms.ValidationError('Email já existe!')
+        return self.cleaned_data['data']
+
+    def save(self):
+
+        hora_marcada = HoraMarcada(**self.cleaned_data)
+        hora_marcada.status = HoraMarcada.MARCADO
+        hora_marcada.paciente = self.usuario
+        hora_marcada.save()
+
+        hora_marcada.save()

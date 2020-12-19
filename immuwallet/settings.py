@@ -212,8 +212,8 @@ SWAGGER_SETTINGS = {
     },
 }
 
-LOGIN_URL = 'contas:login'
-LOGOUT_URL = 'contas:logout'
+LOGIN_URL = 'dashboard:login'
+LOGOUT_URL = 'dashboard:logout'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/

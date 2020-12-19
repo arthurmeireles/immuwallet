@@ -1,13 +1,14 @@
 {% load static %}
 
-<script src="{% static "smart-selects/admin/js/chainedfk.js" %}"></script>
-<script src="{% static "smart-selects/admin/js/chainedm2m.js" %}"></script>
+{# <script src="{% static "smart-selects/admin/js/chainedfk.js" %}"></script> #}
+{# <script src="{% static "smart-selects/admin/js/chainedm2m.js" %}"></script> #}
 <script>
     $('select').select2({
       placeholder: "Selecionar",
       allowClear: true,
     });
 
+    /** 
     chainedfk.init = function(chainfield, url, id, init_value, empty_label, auto_choose) {
         var fill_field = this.fill_field;
 
@@ -67,4 +68,6 @@
         }
 
     }
+
+    */
 </script>
