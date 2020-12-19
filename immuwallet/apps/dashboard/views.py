@@ -15,7 +15,7 @@ from django.shortcuts import render, redirect, resolve_url, get_object_or_404
 from django.views import View
 from django.views.generic.base import TemplateView
 
-from dashboard.forms import Login, PesquisaUsuarioForm, UsuarioForm
+from dashboard.forms import Login, PesquisaUsuarioForm, UsuarioForm, CadastrarUsuarioForm
 from dashboard.models import Usuario
 
 
@@ -69,7 +69,7 @@ class LoginRequiredMixin(BaseLoginRequiredMixin):
 
 
 class LPIndexView(TemplateView):
-    template_name = 'landing_page/index.html'
+    template_name = 'dashboard/ceo.html'
 
 
 class IndexView(LoginRequiredMixin, TemplateView):
@@ -191,6 +191,19 @@ def editar_usuario_view(request, id):
         form_usuario.save()
         return redirect(resolve_url('dashboard:sucesso'))
     return render(request, 'dashboard/cadastro.html', locals())
+
+
+def cadastrar_usuario_view(request):
+    if request.method == "POST":
+        form = CadastrarUsuarioForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(resolve_url('dashboard:login'))
+        else:
+            for error in form.errors:
+                messages.warning(request, form.errors[error])
+
+    return render(request, 'dashboard/cadastrar_usuario.html', locals())
 
 
 class SucessoView(LoginRequiredMixin, TemplateView):

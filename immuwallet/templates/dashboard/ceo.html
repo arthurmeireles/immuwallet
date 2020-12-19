@@ -1,0 +1,122 @@
+{% load static %}
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>IMMUWALLET</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+        <link rel="stylesheet" href="{% static "assets/css/bootstrap.min.css" %}">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="{% static "assets/css/style.css" %}">
+
+        <!-- fonte customizada -->
+        <link rel="stylesheet" type="text/css" href="{% static "assets/css/font-awesome.min.css" %}">
+
+        <link rel="stylesheet" href="{% static "assets/css/animate.css" %}">
+        <script src="{% static "assets/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js" %}"></script>
+        <link href='https://fonts.googleapis.com/css?family=Lato:400,700,300,900' rel='stylesheet' type='text/css'>
+
+    </head>
+
+    </head>
+    <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <a class="navbar-brand page-scroll" href="{% url 'dashboard:landingpage' %}">
+                        <!-- Cada uma dessas imagens é visivel de acordo com a resolução da tela -->
+                        <img src="{% static "assets/img/ufrn.png" class="img-responsive logo" %}"
+                          alt="" class="visible-xs" style="max-width: 190px;"/>
+
+                        <img src="{% static "assets/img/ufrn.png" class="img-responsive logo" %}"
+                          alt="" class="visible-sm" style="max-width: 210px;"/>
+
+                        <img src="{% static "assets/img/ufrn.png" class="img-responsive logo" %}"
+                          alt="" class="visible-md visible-lg"/>
+                    </a>
+                </div>
+
+              <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+                  <ul class="nav navbar-nav nav-custom">
+                      <li class="hidden">
+                          <a href="#page-top"></a>
+                      </li>
+                      <li>
+                          <a class="page-scroll" href="https://lais.huol.ufrn.br/">LAIS</a>
+                      </li>
+                      <li>
+                          <a class="page-scroll" href="{% url 'dashboard:login' %}">Acessar</a>
+                      </li>
+                  </ul>
+              </div>
+              <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container -->
+        </nav>
+
+      <!-- Intro Section -->
+      <section id="intro" class="intro-section">
+          <div class="container">
+              <div class="row">
+                <div class="content">
+                  <div class="col-lg-6">
+                    <img src="{% static 'landing_page/assets/images/smart.png' %}" alt="" class="img-responsive wow" />
+                  </div>
+                  <div class="col-lg-6">
+                    <h1 class="wow">BEM-VINDO AO IMMU<strong>WALLET</strong></h1>
+                    <p class="wow">
+                      Surgimos com o propósito de desenvolver a forma como você maneja um cartão de vacinas e o mantém atualizado, com isso te ajudamos a prevenir doenças e a otimizar as ações sanitárias do governo.
+                    </p>
+                  </div>
+                </div>
+              </div>
+          </div>
+      </section>
+
+      <div class="visible-xs visible-sm visible-md">
+        <br>
+      </div>
+
+      <footer>
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-6">
+                <img src="{% static "assets/img/lais.png" %}" class="img-responsive center-block" alt="" />
+              </div>
+              <div class="col-lg-6">
+                <img src="{% static "assets/img/ufrn.png" %}" class="img-responsive center-block" alt="" />
+              </div>
+            </div>
+          </div>
+      </footer>
+
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="{% static "assets/js/vendor/jquery-1.11.2.min.js" %}"><\/script>')</script>
+
+        <script src="{% static "assets/js/vendor/bootstrap.min.js" %}"></script>
+        <script src="{% static "assets/js/scripts.min.js" %}"></script>
+
+        <script src="{% static "assets/js/wow.min.js" %}"></script>
+        <script>
+        new WOW().init();
+        </script>
+
+        <!-- Scrolling Nav JavaScript -->
+        <script src="{% static "assets/js/jquery.easing.min.js" %}"></script>
+        <script src="{% static "assets/js/scrolling-nav.js" %}"></script>
+    </body>
+</html>

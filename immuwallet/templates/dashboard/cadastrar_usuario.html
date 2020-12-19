@@ -26,7 +26,7 @@
 
     <!-- Brand -->
     <div class="brand">
-        <img src="{% static "assets/img/ien-white.png" %}"  style="max-width: 300px"alt="logo">
+        <img src="{% static "assets/img/ufrn.png" %}"  style="max-width: 300px"alt="logo">
     </div>
     <!--/ Brand -->
 
@@ -36,7 +36,7 @@
         <div class="sign-header">
             <div class="form-group">
                 <div class="sign-text">
-                    <span><b>Sistema de gestão do Estudo SABE</b></span>
+                    <span>Immu<b>wallet</b></span>
                 </div>
             </div><!-- /.form-group -->
         </div>
@@ -50,7 +50,28 @@
         <div class="sign-body">
             <div class="form-group">
                 <div class="input-group input-group-lg rounded no-overflow">
-                    <input id="username" type="text" class="form-control input-sm" placeholder="CPF " name="username"
+                    <input id="username" type="text" class="form-control input-sm" placeholder="Usuário" name="username"
+                           value="{{ form.username.value }}">
+                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                </div>
+            </div><!-- /.form-group -->
+            <div class="form-group">
+                <div class="input-group input-group-lg rounded no-overflow">
+                    <input id="username" type="text" class="form-control input-sm" placeholder="Primeiro nome" name="first_name"
+                           value="{{ form.username.value }}">
+                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                </div>
+            </div><!-- /.form-group -->
+            <div class="form-group">
+                <div class="input-group input-group-lg rounded no-overflow">
+                    <input id="username" type="text" class="form-control input-sm" placeholder="Último nome" name="last_name"
+                           value="{{ form.username.value }}">
+                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                </div>
+            </div><!-- /.form-group -->
+            <div class="form-group">
+                <div class="input-group input-group-lg rounded no-overflow">
+                    <input id="username" type="text" class="form-control input-sm" placeholder="Email" name="email"
                            value="{{ form.username.value }}">
                     <span class="input-group-addon"><i class="fa fa-user"></i></span>
                 </div>
@@ -65,19 +86,6 @@
         </div><!-- /.sign-body -->
         <div class="sign-footer">
             <div class="form-group">
-                <div class="row">
-                    <div class="col-xs-6">
-                        <div class="ckbox ckbox-theme">
-
-                        </div>
-                    </div>
-                    <div class="col-xs-6 text-right">
-                        <a href="{% url "portal:recuperar-senha" %}" title="Se esqueceu a senha clique aqui">Esqueceu a
-                            senha?</a>
-                    </div>
-                </div>
-            </div><!-- /.form-group -->
-            <div class="form-group">
                 <button type="submit" class="btn btn-theme btn-lg btn-block" id="login-btn">Entrar</button>
             </div><!-- /.form-group -->
         </div><!-- /.sign-footer -->
@@ -89,18 +97,14 @@
 
 <footer class="footer-login">
     <div class="row" style="margin-right: inherit">
-        <div class="col-xs-12 col-md-4">
+        <div class="col-xs-12 col-md-6">
             <img src="{% static "assets/img/lais.png" %}" alt="" class="img-responsive center-block">
         </div>
-        <div class="col-xs-12 col-md-4">
+        <div class="col-xs-12 col-md-6">
             <img src="{% static "assets/img/ufrn.png" %}" alt="" class="img-responsive center-block">
-        </div>
-        <div class="col-xs-12 col-md-2">
-            <img src="{% static "assets/img/ien.png" %}" alt="" class="img-responsive center-block" style="max-height: 60px">
         </div>
     </div>
 </footer>
-
 
 <script src="{% static "assets/js/vendor/jquery-1.11.2.min.js" %}"></script>
 <script src="{% static "assets/js/vendor/jquery.dataTables.min.js" %}"></script>

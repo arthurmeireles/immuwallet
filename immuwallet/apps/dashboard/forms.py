@@ -3,9 +3,8 @@ import re
 
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Div, Field, Layout, Submit, HTML
+from crispy_forms.layout import Div, Field, Layout, Submit
 from django import forms
-from django.db.models import Q
 from localflavor.br.forms import BRCPFField
 
 from dashboard.models import Usuario, Perfil, Estabelecimento
@@ -134,7 +133,7 @@ class UsuarioForm(forms.Form):
             self.instance = kwargs.pop("instance")
 
         super(UsuarioForm, self).__init__(*args, **kwargs)
-            
+
         if self.instance:
             self.fields['first_name'].initial = self.instance.first_name
             self.fields['last_name'].initial = self.instance.last_name
@@ -195,3 +194,44 @@ class UsuarioForm(forms.Form):
         perfil.save()
 
         return self.instance
+
+
+class CadastrarUsuarioForm(forms.Form):
+    username = forms.CharField(
+        required=False,
+        label="Nome de usuário",
+        widget=forms.TextInput(),
+    )
+    first_name = forms.CharField(
+        required=False,
+        label="Primeiro nome",
+        widget=forms.TextInput(),
+    )
+    last_name = forms.CharField(
+        required=False,
+        label="Último nome",
+        widget=forms.TextInput(),
+    )
+    email = forms.EmailField(
+        required=False,
+        label="Email",
+        widget=forms.TextInput(),
+    )
+    password = forms.CharField(
+        required=False,
+        label="Último nome",
+        widget=forms.TextInput(),
+    )
+
+    def clean_email(self):
+        if Usuario.objects.filter(email=self.cleaned_data['email']).exists():
+            raise forms.ValidationError('Email já existe!')
+        return self.cleaned_data['email']
+
+    def save(self):
+        password = self.cleaned_data.pop('password')
+        usuario = Usuario(**self.cleaned_data)
+        usuario.set_password(password)
+        usuario.save()
+
+        return usuario
