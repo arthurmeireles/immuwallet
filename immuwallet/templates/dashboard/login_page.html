@@ -1,0 +1,13 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static %}
+{% block content %}
+    <div class="container">
+        <form class="form-signin" action="." method="post">
+            <h2 class="form-signin-heading">Login</h2>
+            {% csrf_token %}
+            <input class="form-control" typeof="" name="username" placeholder="CPF" type="text">
+            <input class="form-control" name="password" placeholder="Senha" type="password">
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
+        </form>
+    </div>
+{% endblock %}

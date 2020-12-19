@@ -1,0 +1,133 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <h2>
+            {% if not editar %}
+              Cadastrar
+            {% else %}
+              Editar
+            {% endif %}
+             Equipe de Campo
+            </h2>
+            <hr>
+        </div>
+        <div class="col-md-12">
+            <div class="bs-example">
+                <div class="x_panel title">
+                    <div class="x_title">
+                      <h3>Dados</h3>
+                    </div>
+                    <div class="x_content">
+                        {% crispy formEquipe %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script language="javascript" type="text/javascript" charset="utf-8">
+      $('select[name="supervisor"]').select2('destroy').replaceWith(function(){
+        return $('<input/>').
+        attr('name', $(this).attr('name')).
+        attr('id', $(this).attr('id')).
+        attr('class', $(this).attr('class')).
+        val($(this).val())
+        .prop('disabled', $(this).prop('disabled'));
+      });
+
+      $('input[name="supervisor"]').each(function(){
+        var elem = $(this);
+
+        elem.select2({
+                ajax: {
+                  url: "{% url 'dashboard:pesquisar_usuario' '_' %}".replace(/_/, elem.attr('name').replace('_', '')),
+                  dataType: 'json',
+                  type: 'POST',
+                  contentType: "application/json",
+                  cache: true,
+                  delay: 250,
+                  data: function (term, page) {
+                    return {
+                      q: term, // search term
+                      page: page
+                    };
+                  },
+                  processResults: function (data, params) {
+                    // parse the results into the format expected by Select2
+                    // since we are using custom formatting functions we do not need to
+                    // alter the remote JSON data, except to indicate that infinite
+                    // scrolling can be used
+                    params.page = params.page || 1;
+
+                    return {
+                      results:$.map(data, function (item) {
+                        var _ = {};
+                        for (key in item) {
+                          _[key != 'nome' ? key : 'text'] = item[key]
+                        }
+                        return _
+                      }),
+                      pagination: {
+                        more: (params.page * 30)
+                      }
+                    };
+                  }
+                },
+                formatSelection: function (data, container) {
+                  return data.text;
+                },
+                initSelection: function(element, callback) {
+                  $.ajax({
+                      type: "POST",
+                      url: "{% url 'dashboard:pesquisar_usuario' '_' %}".replace(/_/, elem.attr('name').replace('_', '')),
+                      dataType: 'json',
+                      data: { pk: (element.val()) },
+                      success: function(data){
+                        data[0]['text'] = data[0]['nome'];
+                        callback(data[0]);
+                      }
+                  });
+                },
+                formatResult: function (data, container) {
+                  var string = '';
+                  //delete data['id'];
+                  var chaves = Object.keys(data);
+                  chaves.splice(chaves.indexOf('id'), 1);
+                  chaves = chaves.sort(function(a, b){
+                    return a < b;
+
+                  });
+
+                  function parse(key) {
+                      var split = key.split('__');
+                      key = split[split.length - 1];
+
+                      if (key == 'cpf') key = 'CPF';
+                      else if (key == 'text') key = 'Nome';
+                      else if(key == 'sigla') key = 'Universidade';
+                      else if (split.length > 2 && split[0] == 'coordenadorcampo' || split[0] == 'supervisor') key = 'Universidade';
+
+                      return key;
+                  }
+
+                  for (i in chaves) {
+
+                    string += `<p style="margin: 0px"><strong>${parse(chaves[i])}:</strong> ${data[chaves[i]]}</span></p>`
+                  }
+
+                  return string;
+                },
+            minimumInputLength: 0,
+            selectOnClose: false,
+            placeholder: "Selecionar",
+            allowClear: true,
+        });
+      });
+    </script>
+{% endblock %}

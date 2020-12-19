@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        {% include 'dashboard/includes/head.html' %}
+        {% block styles %}{% endblock %}
+    </head>
+    <body class="nav-md">
+        <!--[if lt IE 7]>
+            <p class="browsehappy">Seu navegador está <strong>desatualizado</strong>. Por favor <a href="http://browsehappy.com/">atualize seu navegador</a> para uma melhor navegação</p>
+        <![endif]-->
+        <div class="container body">
+            <div class="main_container">
+                <!-- Lateral Nav -->
+                <div class="col-md-3 left_col">
+                  {% include 'dashboard/includes/lateral_nav.html' %}
+                </div>
+
+                <!-- top Nav -->
+                {% include 'dashboard/includes/top_nav.html' %}
+
+                <div class="right_col" role="main">
+                  <div class="row content_pmaq">
+                    {% block content %}{% endblock %}
+                  </div>
+                </div><!-- /right_col -->
+                {% include 'dashboard/footer.html' %}
+            </div>
+        </div>
+        {% include 'dashboard/includes/scripts.html' %}
+        {% include 'dashboard/smart_selects.html' %}
+        {% block script %}{% endblock %}
+
+        <!-- Modal Notifications -->
+        <div class="modal fade" id="modal-notificacao" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="titulo"></h4>
+              </div>
+              <div class="modal-body">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                <a class="link"><button type="button" class="btn btn-primary">Verificar</button></a>
+              </div>
+            </div>
+          </div>
+        </div>
+    </body>
+</html>

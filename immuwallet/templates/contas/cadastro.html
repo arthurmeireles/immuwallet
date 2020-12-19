@@ -1,0 +1,136 @@
+{% load static %}
+<html lang="pt" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Apolo - Registro</title>
+    {% include 'base/includes/head.html' %}
+</head>
+<body>
+<div class="app-container app-theme-white body-tabs-shadow closed-sidebar-mobile closed-sidebar">
+    <div class="app-container closed-sidebar-mobile closed-sidebar">
+        <div class="h-100 bg-premium-dark">
+            <div class="d-flex h-100 justify-content-center align-items-center">
+                <div class="mx-auto app-login-box col-md-8">
+                    <div class="app-logo-inverse mx-auto mb-3"></div>
+                    <div class="modal-dialog w-100">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <h5 class="modal-title">
+                                </h5>
+                                <h4 class="mt-2">
+                                    <div>Bem-vindo à plataforma Apolo!</div>
+                                </h4>
+                                    <span class="widget-subheading">Apenas <span class="text-success">alguns segundos</span> para criar sua conta</span>
+                                <form enctype="multipart/form-data" method="post">{% csrf_token %}
+                                    <div class="divider row"></div>
+                                    <div class="form-row">
+                                        <div class="col-md-12">
+                                            <div class="position-relative form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">
+                                                            <i class="fa fa-envelope"></i>
+                                                        </div>
+                                                    </div>
+                                                    <input name="email" id="email" placeholder="Seu e-mail" type="email"
+                                                       class="form-control" required="true">
+                                                    {% for erro in form.email.errors %}
+                                                        <span class="form-error">{{ erro }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="position-relative form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">
+                                                            <i class="fa fa-user"></i>
+                                                        </div>
+                                                    </div>
+                                                    <input name="nome" id="nome" placeholder="Seu nome" type="text"
+                                                       class="form-control" required="true">
+                                                    {% for erro in form.nome.errors %}
+                                                        <span class="form-error">{{ erro }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="position-relative form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">
+                                                            <i class="fa fa-mobile-alt"></i>
+                                                        </div>
+                                                    </div>
+                                                    <input name="celular" id="celular" placeholder="Seu celular" type="text"
+                                                           class="form-control" required="true">
+                                                    {% for erro in form.celular.errors %}
+                                                        <span class="form-error">{{ erro }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="position-relative form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">
+                                                            <i class="fa fa-key"></i>
+                                                        </div>
+                                                    </div>
+                                                    <input name="senha" id="senha" placeholder="Senha desejada" type="password"
+                                                       class="form-control" required="true">
+                                                    {% for erro in form.senha.errors %}
+                                                        <span class="form-error">{{ erro }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="position-relative form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">
+                                                            <i class="fa fa-key"></i>
+                                                        </div>
+                                                    </div>
+                                                    <input name="senha2" id="senha" placeholder="Confirmar senha" type="password"
+                                                       class="form-control" required="true">
+                                                    {% for erro in form.senha2.errors %}
+                                                        <span class="form-error">{{ erro }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label for="imagem" class="">Imagem de perfil</label>
+                                            <div class="position-relative form-group">
+                                                <input name="imagem" id="imagem" type="file" class="form-control-file">
+                                                {% for erro in form.imagem.errors %}
+                                                    <span class="form-error">{{ erro }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="divider row"></div>
+                                    <button class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-block btn-lg">
+                                        Criar conta
+                                    </button>
+                                </form>
+                            </div>
+
+
+                            <div class="modal-footer d-block text-center">
+                                <h6 class="mb-0">Já possui uma conta? <a href="{% url 'contas:login' %}"
+                                                                             class="text-primary">Entre na plataforma</a></h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center text-white opacity-8 mt-3">Copyright © Need 2020</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>

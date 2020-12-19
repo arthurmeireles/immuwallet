@@ -1,0 +1,189 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load funcoes %}
+
+{% block content %}
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-exclude">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Excluir diário de campo</h4>
+      </div>
+      <div class="modal-body">
+        <p>Você tem certeza que deseja excluir a equipe de campo selecionada? Uma vez feita a exclusão os dados não poderão ser recuperados.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
+        <a class="link-exclude"><button type="button" class="btn btn-primary">Sim</button></a>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="row">
+{% if request.user.perfil.tipo_perfil == 'Administrador' %}
+  <div class="col-md-12">
+    <h2>Gerenciar Equipes</h2>
+  </div>
+  <div class="col-md-12">
+    <div class="bs-example">
+      <div class="x_panel title">
+        <div class="x_title">
+          <h3>Filtrar equipes</h3>
+        </div>
+        <div class="x_content">
+          {% crispy form %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% else %}
+{% if request.user.perfil.tipo_perfil != "Administrador" and request.user.perfil.tipo_perfil != "Gestor Federal" and request.user.perfil.tipo_perfil != "Coordenador Geral" %}
+  <div class="col-xs-6 col-md-3 padding-horizontal">
+    <div class="card text-center">
+      <h2 class="c-pmaq stat-count">{{qtd_equipes}}</h2>
+      <h5>Equipes</h5>
+    </div>
+  </div>
+  <div class="col-xs-6 col-md-3 padding-horizontal">
+    <div class="card text-center">
+      <h2 class="c-pmaq stat-count">{{qtd_profissionais}}</h2>
+      <h5>Profis. Supervisionados</h5>
+    </div>
+  </div>
+  <div class="col-xs-6 col-md-3 padding-horizontal">
+    <div class="card text-center">
+      <h2 class="c-pmaq stat-count">{{qtd_avaliacoes_realizadas}}</h2>
+      <h5>Avaliações Realizadas</h5>
+    </div>
+  </div>
+  <div class="col-xs-6 col-md-3 padding-horizontal">
+    <div class="card text-center">
+      <h2 class="c-pmaq stat-count">{{qtd_diarios_campo}}</h2>
+      <h5>Diários de campo</h5>
+    </div>
+  </div>
+{% endif %}
+{% endif %}
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="bs-example">
+      <div class="x_panel title">
+        <div class="x_title">
+          <h3>Equipes encontradas</h3>
+        </div>
+        <table class="table table-hover table-striped table-bordered table1" width="100%" id="tabela_equipes">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Entrevistadores</th>
+              {# {% if request.user.perfil.tipo_perfil == 'Administrador' or request.user.perfil.tipo_perfil == 'Coordenador de Campo'%} #}
+              <th>Supervisor</th>
+              {# {% endif %} #}
+              <th>Ação</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script language="javascript" type="text/javascript" charset="utf-8">
+function search() {
+
+  if (search.table !== undefined)
+    search.table.destroy();
+
+  search.table = $('#tabela_equipes').DataTable( {
+    "processing": true, "searchDelay": 350,
+    "serverSide": true,
+    "responsive": true,
+    "bLengthChange": false,
+    "pagingType": "simple_numbers",
+    "iDisplayLength": 10,
+    "sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',
+    "language": {
+      "url": "//cdn.datatables.net/plug-ins/1.10.11/i18n/Portuguese-Brasil.json"
+    },
+    "columnDefs": [ {
+          "targets": -1,
+          "data": null,
+          "orderable": false,
+          "sClass": "action",
+          "render": function(data, type, full, meta){
+             if(type === 'display'){
+
+               var urls = [
+                 "{% url 'dashboard:editar-equipe' 0 %}".replace(/\d+\/$/, full[full.length - 1]),
+                 "{% url 'dashboard:remover-equipe' 0 %}".replace(/\d+\/$/, full[full.length - 1]),
+                 "{% url 'dashboard:adicionar-entrevistadores-equipe' 0 %}".replace(/\d+/, full[full.length - 1])
+               ];
+
+               data = '<a href=' + urls[0] + '>' +
+                 '<button class="btn btn-primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</button>' +
+               '</a>' +
+              '<a class="excluir-equipe" href=' + urls[1] + '>' +
+                   '<button class="btn btn-exclude"><i class="fa fa-times" aria-hidden="true"></i> Excluir</button>' +
+              '</a>' +
+              '<a href=' + urls[2] + '>' +
+                   '<button class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Adicionar entrevistadores</button>' +
+              '</a>';
+             }
+             return data;
+          }
+     },
+     {
+           "targets": 1,
+           "data": null,
+           "orderable": true,
+           "render": function(data, type, full, meta){
+              if(type === 'display'){
+
+                var url = "{% url 'dashboard:entrevistadores-equipe' 0 %}".replace(/\d+\/entrevistadores\/$/, full[full.length - 1] + '/entrevistadores/');
+                if (full[1] > 0)
+                  data = full[1] + (full[1] > 1 ? ' entrevistadores' : ' entrevistador') + ' <a href="' + url + '">[Mostrar todos]</a>';
+                else
+                  data = 'Nunhum entrevistador cadastrado'
+              }
+              return data;
+           }
+      } ],
+    "ajax": $.fn.dataTable.pipeline( {
+      url: '',
+      method: 'POST',
+      data: '{}',
+      pages: 5,
+    } )
+  } );
+}
+
+$(document).ready(function(){
+  $('select').select2();
+  search();
+
+  $('form').submit(function(evt){
+    evt.preventDefault();
+
+    search();
+  });
+
+  $(document).on('click', '.btn-exclude', function(evt){
+    evt.preventDefault();
+    $('#modal-exclude').modal('show');
+
+    $('.link-exclude').attr('href', $('.btn-exclude').parent().attr('href'));
+  });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+	<head>
+    <!-- <meta charset="utf-8"> -->
+		<style>
+      @page {
+          size: a4 portrait;
+          @frame content_frame {          /* Content Frame */
+              left: 60pt; width: 478pt; top: 70pt; height: 720pt;
+            }
+          }
+			body{
+				font-family: "Arial", Times, serif;
+        font-weight: bold;
+				font-size: 12px;
+			}
+      .header {
+        text-align: center;
+        font-size: 15px;
+      }
+      .block_info{
+          margin-top: 40px;
+      }
+
+      .title {
+        font-size: 14px;
+      	text-decoration: underline;
+				margin-top: 50px;
+				margin-bottom: 10px;
+			}
+			.block_info{
+				text-align: center;
+			}
+			th {
+				color: black;
+			}
+			table {
+				border: 0.2px solid #0e171c;
+                padding-left: 8px;
+                padding-right: 8px;
+                padding-bottom: 4px;
+                padding-top: 6px;
+			}
+      td{
+          font-weight: 300;
+      }
+    </style>
+  </head>
+
+  <body>
+    <keep-in-frame>
+      <div class="header">
+          <img src="{% static "assets/img/Brastra.gif" %}" width="100px" height="100px"/> <br/>
+        MINISTÉRIO DA SAÚDE <br/>
+        SECRETARIA DE ATENÇÃO À SAÚDE <br/>
+        DEPARTAMENTO DE ATENÇÃO BÁSICA <br/>
+        COORDENAÇÃO GERAL DE ACOMPANHAMENTO <br/>
+        E AVALIAÇÃO – CGAA <br/>
+        PROGRAMA NACIONAL DE MELHORIA DO ACESSO E DA QUALIDADE <br/>
+        DA ATENÇÃO BÁSICA (PMAQ-AB) <br/>
+      </div>
+        <div class="block_info">
+	      <div class="title">
+                    QUANTIDADE DE EQUIPES AVALIADAS POR UNIVERSIDADE
+				</div>
+				<table class="table table-hover table-striped table-bordered" width="100%">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">IES</th>
+                                <th colspan="3">Nº Município</th>
+                                <th colspan="3">Equipe AB e AB/SB</th>
+                                <th colspan="3">Equipe NASF</th>
+                            </tr>
+                            <tr>
+                                <th>Qtd Municípios</th>
+                                <th>Avaliados</th>
+                                <th>Percentual</th>
+
+                                <th>Qtd equipes</th>
+                                <th>Avaliados</th>
+                                <th>Percentual</th>
+
+                                <th>Qtd equipes</th>
+                                <th>Avaliados</th>
+                                <th>Percentual</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for d in universidades %}
+                              <tr>
+                                  <td>{{d.universidade}}</td>
+                                  <td>{{d.qtd_municipios}}</td>
+                                  <td>{{d.qtd_municipios_avaliados}}</td>
+                                  <td>{{d.qtd_municipios_avaliados}}</td>
+                                  <td>{{d.qtd_equipes_ab}}</td>
+                                  <td>{{d.qtd_avaliadas_ab}}</td>
+                                  <td>{{d.qtd_avaliadas_ab}}</td>
+                                  <td>{{d.qtd_equipes_nasf}}</td>
+                                  <td>{{d.qtd_avaliadas_nasf}}</td>
+                                  <td>{{d.qtd_avaliadas_nasf}}</td>
+                              </tr>
+                            {% endfor %}
+                          </tbody>
+                    </table>
+			</div>
+    </keep-in-frame>
+  </body>
+</html>

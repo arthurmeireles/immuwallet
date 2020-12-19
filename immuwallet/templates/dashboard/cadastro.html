@@ -1,0 +1,168 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-exclude">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Promover entrevistador</h4>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 1.2em">Você tem certeza que deseja promover o entrevistador para nível de supervisor?</p>
+        <p style="font-size: 1.2em">Essa alteração <span style="color: #1A82C3">NÃO</span> poderá ser revertida.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
+        <a class="link-exclude"><button type="button" class="btn btn-primary">Sim</button></a>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+{% extends 'dashboard/base_dashboard.html' %} {% load static %} {% load crispy_forms_tags %} {% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2>
+            {% if form_usuario.instance.id != request.user.id and ent %}
+                {% if editar == True %} Editar perfil de {{form_usuario.instance.nome}} - {% else %} Cadastrar {% endif %} {% if ent == 'administrador' %} Administrador {% elif ent == 'gestor_federal' %} Gestor Federal {% elif ent == 'gestor_federal_ms' %} Gestor Federal MS {% elif ent == 'coordenador_geral' %} Coordenador Geral {% elif ent == 'coordenador_de_campo'%} Coordenador de Campo {% elif ent == 'supervisor' %} Supervisor {% elif ent == 'entrevistador' %} Entrevistador {% elif ent == 'ses' %} COSEMS / SES {% endif %}
+            {% elif not ent %}
+                Alterar perfil de usuário
+            {% else %}
+                Editar meu perfil
+            {% endif %}
+        </h2>
+        <hr>
+    </div>
+    <div class="col-md-12">
+        <div class="bs-example">
+            <div class="x_panel title">
+                <div class="x_title">
+                    <h3>Dados</h3>
+                </div>
+                <div class="x_content">
+                    {% crispy form_usuario %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+  $('select[name="gestor_federal"], select[name="coordenador_geral"], select[name="coordenador_campo"]').select2('destroy').replaceWith(function(){
+    return $('<input/>').
+    attr('name', $(this).attr('name')).
+    attr('id', $(this).attr('id')).
+    attr('class', $(this).attr('class')).
+    val($(this).val())
+    .prop('disabled', $(this).prop('disabled'));
+  });
+
+  $('select[name="perfil"]').change(function(){
+     $('.esconder').addClass('hidden');
+
+     if ($(this).find('option:selected').text() == 'Coordenador Geral') {
+         $('.div-coordenador-geral').removeClass('hidden');
+     } else if ($(this).find('option:selected').text() == 'Coordenador de Campo') {
+          $('.div-coordenador-campo').removeClass('hidden');
+     } else if ($(this).find('option:selected').text() == 'COSEMS/SES') {
+          $('.div-cosems-ses').removeClass('hidden');
+     } else if ($(this).find('option:selected').text() == 'Supervisor') {
+          $('.div-supervisor').removeClass('hidden');
+     } else if ($(this).find('option:selected').text() == 'Entrevistador') {
+          $('.div-entrevistador').removeClass('hidden');
+     }
+ }).change();
+
+  $(document).on('click', '.btn-exclude', function(evt){
+    evt.preventDefault();
+    $('.link-exclude').attr('href', $(this).parent().attr('href'));
+    $('#modal-exclude').modal('show');
+  });
+
+  $('input[name="gestor_federal"], input[name="coordenador_geral"], input[name="coordenador_campo"]').each(function(){
+    var elem = $(this);
+
+    elem.select2({
+      ajax: {
+        url: "{% url 'dashboard:index' %}".replace(/_/, elem.attr('name').replace('_', '')),
+        dataType: 'json',
+        type: 'POST',
+        contentType: "application/json",
+        cache: true,
+        delay: 250,
+        data: function (term, page) {
+          return {
+            q: term, // search term
+            page: page
+          };
+        },
+        processResults: function (data, params) {
+          // parse the results into the format expected by Select2
+          // since we are using custom formatting functions we do not need to
+          // alter the remote JSON data, except to indicate that infinite
+          // scrolling can be used
+          params.page = params.page || 1;
+
+          return {
+            results:$.map(data, function (item) {
+              var _ = {};
+              for (key in item) {
+                _[key != 'nome' ? key : 'text'] = item[key]
+              }
+              return _
+            }),
+            pagination: {
+              more: (params.page * 30)
+            }
+          };
+        }
+      },
+      formatSelection: function (data, container) {
+        return data.text;
+      },
+      initSelection: function(element, callback) {
+        $.ajax({
+            type: "POST",
+            url: "{% url 'dashboard:index' %}".replace(/_/, elem.attr('name').replace('_', '')),
+            dataType: 'json',
+            data: { pk: (element.val()) },
+            success: function(data){
+              data[0]['text'] = data[0]['nome'];
+              callback(data[0]);
+            }
+        });
+      },
+      formatResult: function (data, container) {
+        var string = '';
+        //delete data['id'];
+        var chaves = Object.keys(data);
+        chaves.splice(chaves.indexOf('id'), 1);
+        chaves = chaves.sort(function(a, b){
+          return a < b;
+
+        });
+
+        function parse(key) {
+            var split = key.split('__');
+            key = split[split.length - 1];
+
+            if (key == 'cpf') key = 'CPF';
+            else if (key == 'text') key = 'Nome';
+            else if(key == 'sigla') key = 'Universidade';
+            else if (split.length > 2 && split[0] == 'coordenadorcampo' || split[0] == 'supervisor') key = 'Universidade';
+
+            return key;
+        }
+
+        for (i in chaves) {
+          string += `<p style="margin: 0px"><strong>${parse(chaves[i])}:</strong> ${data[chaves[i]]}</span></p>`
+        }
+
+        return string;
+      },
+      minimumInputLength: 0,
+      selectOnClose: false,
+      placeholder: "Selecionar",
+      allowClear: true,
+    });
+  });
+</script>
+{% endblock %}

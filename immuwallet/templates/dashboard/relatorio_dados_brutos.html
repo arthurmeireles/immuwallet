@@ -1,0 +1,160 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static %}
+{% load funcoes %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Relatório de Envio</h2>
+      <hr>
+    </div>
+
+    <!-- começa aqui -->
+    <div class="col-md-12">
+      <div class="bs-example">
+        <div class="x_panel title">
+          <div class="x_title">
+            <h3>Filtrar</h3>
+          </div>
+
+          <div class="x_content">
+            {% crispy form %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <div class="bs-example">
+        <div class="x_panel title">
+          <div class="x_title">
+            <div class="row">
+              <div class="col-md-10">
+                <h3>Submissão de dados brutos ({{dbrutos.count}})</h3>
+              </div>
+                <div class="col-md-2">
+                  <a href="{% url 'dashboard:relatorio_dados_brutos' %}?download=true" style="margin-top:10px" class="btn btn-info btn-block">Download</a>
+                </div>
+            </div>
+          </div>
+
+          <table class="table table-hover table-striped table-bordered table1 dataTable no-footer" width="100%" id="tabela_equipes">
+            <thead>
+              <tr>
+                <th>Estabelecimento</th>
+                <th>Salvo no Drive</th>
+                <th>Processado</th>
+                <th>Data de submissão</th>
+              </tr>
+            </thead>
+            {% for dado in registros %}
+            <tr>
+              <td>{{dado.cnes.cnes}}-{{dado.cnes.nome}}</td>
+              <td>{% if dado.uploaded %}
+                <span class="label label-success">Sim</span>
+                {% else %}
+                <span class="label label-danger">Não</span>
+                {% endif %}
+              </td>
+              <td>{% if dado.processado %}
+                <span class="label label-success">Sim</span>
+                {% else %}
+                <span class="label label-danger">Não</span>
+                {% endif %}
+              </td>
+              <td>{{dado.data_submissao}}</td>
+            </tr>
+            {% endfor %}
+          </table>
+          <!-- <form id="btn-download" action="{% url 'dashboard:download_relatorio_cnes_ine' %}" method="post">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-actions">
+                  <input type="submit" name="submit" value="Baixar relatório detalhado" class="btn btn-primary pull-right">
+                </div>
+              </div>
+            </div>
+          </form> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="display: none" class="se-pre-con"></div>
+
+
+<div class="row view-pager">
+  <div class="col-sm-12">
+    <div class="pull-right">
+      <div class="dataTables_info" id="tabela_equipes_info" role="status" aria-live="polite">
+          Página {{ registros.number }} de {{ registros.paginator.num_pages }}
+      </div>
+      
+      <div class="dataTables_paginate paging_simple_numbers" id="tabela_equipes_paginate">
+        <ul class="pagination">
+            {% if registros.has_previous %}
+          <li class="paginate_button previous" id="tabela_equipes_previous">
+            <a href="?page=1" aria-controls="tabela_equipes" data-dt-idx="0" tabindex="0">
+              Início
+            </a>
+          </li>
+          <li class="paginate_button">
+            <a href="?page={{ registros.previous_page_number }}" aria-controls="tabela_equipes" data-dt-idx="1" tabindex="0">
+                &laquo; Anterior
+            </a>
+          </li>
+          {% endif %}
+          {% if registros.has_next %}
+          <li class="paginate_button ">
+            <a href="?page={{ registros.next_page_number }}" aria-controls="tabela_equipes" data-dt-idx="7" tabindex="0">
+              Próxima &raquo;
+            </a>
+          </li>
+          <li class="paginate_button next" id="tabela_equipes_next">
+            <a href="?page={{ registros.paginator.num_pages }}" aria-controls="tabela_equipes" data-dt-idx="8" tabindex="0">
+              Final
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+$(document).ready(function(){
+
+  (function($) {
+      var chainfield = "#id_estado";
+      var url = "{% url 'filtro-submissao-municipos' '__' %}".replace(/\/\w+$/, '')
+      var id = "#id_cidade";
+      var value = undefined;
+      var auto_choose = false;
+      var empty_label = "Todas";
+
+      $(document).ready(function() {
+        chainedfk.init(chainfield, url, id, value, empty_label, auto_choose);
+      });
+  })(jQuery || django.jQuery);
+
+  (function($) {
+      var chainfield = "#id_cidade";
+      var url = "//{{ BASE_URL }}" + "/chaining/filter/common/UnidadeSaude/municipio/dashboard/Dashboard/unidade";
+      var id = "#id_cnes";
+      var value = undefined;
+      var auto_choose = false;
+      var empty_label = "Todos";
+
+      $(document).ready(function() {
+        chainedfk.init(chainfield, url, id, value, empty_label, auto_choose);
+      });
+  })(jQuery || django.jQuery);
+
+});
+</script>
+{% endblock %}

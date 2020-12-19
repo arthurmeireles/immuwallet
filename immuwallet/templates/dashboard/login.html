@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Login</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static "assets/css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "assets/css/font-awesome.min.css" %}" rel="stylesheet">
+    <link href="{% static "assets/css/animate.min.css" %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static "assets/css/style.css" %}">
+
+</head>
+<body class="login">
+<!--[if lt IE 7]>
+            <p class="browsehappy">Seu navegador está <strong>desatualizado</strong>. Por favor <a href="http://browsehappy.com/">atualize seu navegador</a> para uma melhor navegação</p>
+        <![endif]-->
+<div id="sign-wrapper">
+
+    <!-- Brand -->
+    <div class="brand">
+        <img src="{% static "assets/img/ufrn.png" %}"  style="max-width: 300px"alt="logo">
+    </div>
+    <!--/ Brand -->
+
+    <!-- Login form -->
+    <form class="sign-in form-horizontal shadow" action="" method="post" novalidate="novalidate">
+        {% csrf_token %}
+        <div class="sign-header">
+            <div class="form-group">
+                <div class="sign-text">
+                    <span>Immu<b>wallet</b></span>
+                </div>
+            </div><!-- /.form-group -->
+        </div>
+        {% for mensagem in messages %}
+            {% if mensagem.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                <div style="color: red">
+                    <p class="text-danger text-center">{{ mensagem|safe }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+        <div class="sign-body">
+            <div class="form-group">
+                <div class="input-group input-group-lg rounded no-overflow">
+                    <input id="username" type="text" class="form-control input-sm" placeholder="Usuário" name="username"
+                           value="{{ form.username.value }}">
+                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                </div>
+            </div><!-- /.form-group -->
+            <div class="form-group">
+                <div class="input-group input-group-lg rounded no-overflow">
+                    <input id="password" type="password" class="form-control input-sm" placeholder="Senha"
+                           name="password">
+                    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                </div>
+            </div><!-- /.form-group -->
+        </div><!-- /.sign-body -->
+        <div class="sign-footer">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="ckbox ckbox-theme">
+
+                        </div>
+                    </div>
+                    <div class="col-xs-6 text-right">
+                        <a href="" title="Se esqueceu a senha clique aqui">Esqueceu a
+                            senha?</a>
+                    </div>
+                </div>
+            </div><!-- /.form-group -->
+            <div class="form-group">
+                <button type="submit" class="btn btn-theme btn-lg btn-block" id="login-btn">Entrar</button>
+            </div><!-- /.form-group -->
+        </div><!-- /.sign-footer -->
+    </form><!-- /.form-horizontal -->
+    <!--/ Login form -->
+
+</div>
+
+
+<footer class="footer-login">
+    <div class="row" style="margin-right: inherit">
+        <div class="col-xs-12 col-md-6">
+            <img src="{% static "assets/img/lais.png" %}" alt="" class="img-responsive center-block">
+        </div>
+        <div class="col-xs-12 col-md-6">
+            <img src="{% static "assets/img/ufrn.png" %}" alt="" class="img-responsive center-block">
+        </div>
+    </div>
+</footer>
+
+<script src="{% static "assets/js/vendor/jquery-1.11.2.min.js" %}"></script>
+<script src="{% static "assets/js/vendor/jquery.dataTables.min.js" %}"></script>
+<script src="{% static "assets/js/vendor/bootstrap.min.js" %}"></script>
+<script src="{% static "assets/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js" %}"></script>
+<script src="{% static "assets/js/scripts.min.js" %}"></script>
+<script src="{% static "dashboard/js/jquery.mask.js" %}"></script>
+</body>
+</html>

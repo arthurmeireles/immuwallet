@@ -1,0 +1,54 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <h2>{% if formDiarioCampo.instance.id %}Gerenciar {% else %}Preencher {% endif %} Diário de Campo</h2>
+            <hr>
+        </div>
+        <div class="col-md-12">
+            <div class="bs-example">
+                <div class="x_panel title">
+                    <div class="x_title">
+                      <h3>Dados</h3>
+                    </div>
+                    <div class="x_content">
+                        {% crispy formDiarioCampo %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+      (function($) {
+          var chainfield = "#id_estado";
+          var url = "//{{ BASE_URL }}" + "/chaining/filter/common/Municipio/estado/dashboard/DiarioCampo/municipio";
+          var id = "#id_municipio";
+          var value = $('#id_municipio').val();
+          var auto_choose = false;
+          var empty_label = "";
+
+          $(document).ready(function() {
+              chainedfk.init(chainfield, url, id, value, empty_label, auto_choose);
+          });
+      })(jQuery || django.jQuery);
+
+      (function($) {
+          var chainfield = "#id_municipio";
+          var url = "//{{ BASE_URL }}" + "/chaining/filter/common/UnidadeSaude/municipio/dashboard/DiarioCampo/unidade";
+          var id = "#id_unidade";
+          var value = $('#id_unidade').val();
+          var auto_choose = false;
+          var empty_label = "";
+
+          $(document).ready(function() {
+              chainedfk.init(chainfield, url, id, value, empty_label, auto_choose);
+          });
+      })(jQuery || django.jQuery);
+    </script>
+{% endblock %}

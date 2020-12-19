@@ -1,0 +1,423 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static %}
+{% load l10n %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <h2>Estatísticas</h2>
+    <hr>
+  </div>
+  <div class="col-md-12">
+    <div class="bs-example">
+      <div class="x_panel title">
+        <div class="x_title">
+          <h3>Filtrar estatísticas</h3>
+        </div>
+        <div class="x_content">
+          {% crispy form %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="x_panel">
+        <div>
+          <div id="grafico-tipo-equipe"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="x_panel">
+        <div>
+          <div id="grafico-envio-modulos"></div>
+        </div>
+      </div>
+    </div>
+    {% if request.user.perfil.tipo_perfil != 'Coordenador de Campo' %}
+    <div class="col-md-12">
+      <div class="x_panel">
+        <div class="x_content">
+          <div id="grafico-tipo-equipe2"></div>
+        </div><!-- /x-content -->
+      </div><!-- /xpanel -->
+    </div><!-- /col-md-6 -->
+    {% endif %}
+
+    <div class="col-md-12">
+      <div class="x_panel title">
+        <div class="x_title">
+          <h3>Avaliações por universidade parceira</h3>
+        </div>
+        <div class="x_content">
+          <div style="padding-bottom: 50px;">
+            {% crispy form_parceiras %}
+          </div>
+          <div id="grafico-tipo-equipe3"></div>
+        </div><!-- /x-content -->
+      </div><!-- /xpanel -->
+    </div><!-- /col-md-6 -->
+
+    {% if request.user.perfil.tipo_perfil != 'Coordenador de Campo' %}
+    <div class="col-md-12">
+      <div class="bs-example">
+        <div class="x_panel title">
+          <div class="x_title">
+            <h3>Consolidado de avaliações por universidade principal</h3>
+          </div>
+        <div class="x_content">
+          <table class="table table-hover table-striped table-bordered" id="estatisticas-universidade-principal">
+              <thead>
+                  <tr>
+                      <th rowspan="2">Universidade</th>
+                      <th colspan="3">Município</th>
+                      <th colspan="3">Tipo I</th>
+                      <th colspan="3">Tipo II</th>
+                      <th colspan="3">Tipo III</th>
+                  </tr>
+                  <tr>
+                      <th><abbr title="Quantidade">Qtd</abbr> de Municípios</th>
+                      <th>Avaliados</th>
+                      <th>Percentual</th>
+                      <th><abbr title="Quantidade">Qtd</abbr> de unidades</th>
+                      <th>Avaliados</th>
+                      <th>Percentual</th>
+                      <th><abbr title="Quantidade">Qtd</abbr> de unidades</th>
+                      <th>Avaliados</th>
+                      <th>Percentual</th>
+                      <th><abbr title="Quantidade">Qtd</abbr> de unidades</th>
+                      <th>Avaliados</th>
+                      <th>Percentual</th>
+                  </tr>
+              </thead>
+              <tbody>
+                {% for d in avaliacoes_universidade %}
+                  <tr>
+                      <td>{{d.universidade}}</td>
+                      <td>{{d.qtd_municipios}}</td>
+                      <td>{{d.qtd_municipios_avaliados}}</td>
+                      <td>{{d.qtd_municipios_avaliados|percentual:d.qtd_municipios|safe}}</td>
+                      <td>{{d.qtd_unidades_i}}</td>
+                      <td>{{d.qtd_avaliadas_i}}</td>
+                      <td>{{d.qtd_avaliadas_i|percentual:d.qtd_unidades_i|safe}}</td>
+                      <td>{{d.qtd_unidades_ii}}</td>
+                      <td>{{d.qtd_avaliadas_ii}}</td>
+                      <td>{{d.qtd_avaliadas_ii|percentual:d.qtd_unidades_ii|safe}}</td>
+                      <td>{{d.qtd_unidades_iii}}</td>
+                      <td>{{d.qtd_avaliadas_iii}}</td>
+                      <td>{{d.qtd_avaliadas_iii|percentual:d.qtd_unidades_iii|safe}}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+          </table>
+          <div class="form-actions">
+              <form method="post">{% csrf_token %}
+                  <input type="submit" value="Imprimir tabela" name="imprimir-tabela" class="btn btn-primary pull-right" target="_blank" formtarget="_blank">
+              </form>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+    {% endif %}
+   </div>
+
+
+
+{% endblock %}
+
+{% block script %}
+  <script type="text/javascript">
+  {% if request.user.perfil.tipo_perfil != 'COSEMS/SES' %}
+    $(document).ready(function() {
+        (function($) {
+            var chainfield = "#id_estado";
+            var url = "{% url 'filtro-submissao-municipos' '__' %}".replace(/\/\w+$/, '')
+            var id = "#id_municipio";
+            var value = undefined;
+            var auto_choose = false;
+            var empty_label = "Todos";
+
+            $(document).ready(function() {
+                chainedfk.init(chainfield, url, id, value, empty_label, auto_choose);
+            });
+        })(jQuery || django.jQuery);
+      });
+  {% endif %}
+
+  {% if request.user.perfil.tipo_perfil != 'Coordenador Geral' %}
+  (function($) {
+      var chainfield = "#id_universidade_principal";
+      var url = "//{{ BASE_URL }}" + "/chaining/filter/avaliacoes/ies_apoiadora/principal/common/ies_principal/id";
+      var id = "#id_universidade_apoiadora";
+      var value = undefined;
+      var auto_choose = false;
+      var empty_label = "Todas";
+
+      $(document).ready(function() {
+          chainedfk.init(chainfield, url, id, value, empty_label, auto_choose);
+      });
+  })(jQuery || django.jQuery);
+  {% endif %}
+
+  {% if request.user.perfil.tipo_perfil != 'Coordenador de Campo' %}
+  (function($) {
+      var chainfield = "#id_universidade_apoiadora";
+      var url = "//{{ BASE_URL }}" + "/chaining/filter/common/estado/ies_apoiadora/common/ies_apoiadora/id";
+      var id = "#id_estado";
+      var value = undefined;
+      var auto_choose = false;
+      var empty_label = "Todos";
+
+      $(document).ready(function() {
+          chainedfk.init(chainfield, url, id, value, empty_label, auto_choose);
+      });
+  })(jQuery || django.jQuery);
+  {% endif %}
+
+    $(function () {
+      Highcharts.setOptions({
+          lang: {
+              months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+              'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+              weekdays: ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta', 'Sexta', 'Sábado', 'Domingo'],
+              shortMonths: [ "Jan" , "Fev" , "Mar" , "Abr" , "Mai" , "Jun" ,
+              "Jul" , "Ago" , "Set" , "Out" , "Nov" , "Dez"],
+              rangeSelectorFrom: 'De',
+              rangeSelectorTo: 'Até'
+          }
+      });
+      /*
+        Realiza o redirect ao selecionar uma opção do select #filtro
+      */
+      $('#filtro').change(function () {
+        if ($(this).val() != "") {
+          window.location.href = "?filtro=" + $(this).val();
+        }
+      });
+    });
+  </script>
+
+<script type="text/javascript">
+
+    function ascrollto(id) {
+      var etop = $('#' + id).offset().top;
+      $('html, body').animate({
+        scrollTop: etop
+      }, 1000);
+    }
+
+    $('.form-pesquisa-apoiadoras').submit(function(evt){
+      evt.preventDefault();
+
+      var grafico_apoiadoras_opts = {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Avaliações por universidade parceira'
+        },
+        colors: ["#7cb5ec", "#f7a35c"],
+         credits:{
+            enabled:false
+          },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            categories: [],
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            max: 100,
+            allowDecimals: true,
+            title: {
+                text: 'Percentual'
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.total} avaliações</b> ({point.percentual}% de {point.esperado})</td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        series: []
+      };
+
+      $.ajax({
+        data: $('.form-pesquisa-apoiadoras').serialize(),
+        url: '{% url "dashboard:dados_estatisticas" "universidades_apoiadoras" %}',
+        success: function(dados) {
+          grafico_apoiadoras_opts.series = dados['series'];
+          grafico_apoiadoras_opts.xAxis.categories = dados['categories'];
+          $('#grafico-tipo-equipe3').highcharts(grafico_apoiadoras_opts);
+          // ascrollto('grafico-tipo-equipe3');
+        }
+      });
+
+    }).submit();
+
+      var grafico_principais_opts = {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Avaliações por universidade principal'
+        },
+        colors: ["#7cb5ec", "#f7a35c"],
+         credits:{
+            enabled:false
+          },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            categories: [],
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            max: 100,
+            allowDecimals: true,
+            title: {
+                text: 'Percentual'
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.total} avaliações</b> ({point.percentual}% de {point.esperado})</td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        series: []
+      };
+
+      $.ajax({
+        data: $('.form-pesquisa-highstocks').serialize(),
+        url: '{% url "dashboard:dados_estatisticas" "universidades_principais" %}',
+        success: function(dados) {
+            grafico_principais_opts.series = dados['series'];
+            grafico_principais_opts.xAxis.categories = dados['categories'];
+
+            $('#grafico-tipo-equipe2').highcharts(grafico_principais_opts);
+        }
+      });
+
+  $('.form-pesquisa-highstocks').submit(function(evt){
+    evt.preventDefault();
+
+    var grafico_1_opts = {
+        title: {
+            text: 'Envios diários por módulo'
+        },
+        credits:{
+          enabled: false
+        },
+        tooltip: {
+            xDateFormat: '%d/%m/%Y'
+        },
+        rangeSelector: {
+            selected: 0,
+            buttons: [
+              {type: 'month', count: 1, text: '1m'},
+              {type: 'month', count: 3,text: '3m'},
+              {type: 'month',count: 6,text: '6m'},
+              {type: 'ytd', text: 'Ano'},
+              {type: 'year', count: 1, text: '1 ano'},
+              {type: 'all', text: 'Tudo'}
+            ]
+        },
+        xAxis: {
+            type: 'date',
+            dateTimeLabelFormats: {
+                millisecond: '%d/%m/%Y',
+                second: '%d/%m/%Y',
+                minute: '%d/%m/%Y',
+                hour: '%d/%m/%Y',
+                day: '%d/%m/%Y',
+                week:'%d/%m/%Y',
+                month: '%d/%m/%Y',
+                year: '%d/%m/%Y',
+            },
+        },
+        series: []
+    };
+
+    var grafico_2_opts = {
+        title: {
+            text: 'Avaliações diárias por tipo de CEO'
+        },
+        credits:{
+          enabled: false
+        },
+        tooltip: {
+            xDateFormat: '%d/%m/%Y'
+        },
+        rangeSelector: {
+            selected: 0,
+            buttons: [
+              {type: 'month', count: 1, text: '1m'},
+              {type: 'month', count: 3,text: '3m'},
+              {type: 'month',count: 6,text: '6m'},
+              {type: 'ytd', text: 'Ano'},
+              {type: 'year', count: 1, text: '1 ano'},
+              {type: 'all', text: 'Tudo'}
+            ]
+        },
+        xAxis: {
+            type: 'date',
+            dateTimeLabelFormats: {
+                millisecond: '%d/%m/%Y',
+                second: '%d/%m/%Y',
+                minute: '%d/%m/%Y',
+                hour: '%d/%m/%Y',
+                day: '%d/%m/%Y',
+                week:'%d/%m/%Y',
+                month: '%d/%m/%Y',
+                year: '%d/%m/%Y',
+            },
+        },
+        series: []
+    };
+
+    $.ajax({
+      data: $('.form-pesquisa-highstocks').serialize(),
+      url: '{% url "dashboard:dados_estatisticas" "envios" %}',
+      success: function(dados) {
+        console.log('data', this);
+        console.log('dados', dados);
+          grafico_1_opts.series = dados['envios_modulo']['series'];
+          grafico_2_opts.series = dados['avaliacoes_diarias']['series'];
+
+          for (var i in grafico_2_opts.series) {
+              for (var j in grafico_2_opts.series[i].data) {
+                  grafico_2_opts.series[i].data[j][0] = new Date(grafico_2_opts.series[i].data[j][0]).getTime();
+              }
+          }
+
+          for (var i in grafico_1_opts.series) {
+              for (var j in grafico_1_opts.series[i].data) {
+                  grafico_1_opts.series[i].data[j][0] = new Date(grafico_1_opts.series[i].data[j][0]).getTime();
+              }
+          }
+
+          Highcharts.stockChart('grafico-envio-modulos', grafico_1_opts);
+          Highcharts.stockChart('grafico-tipo-equipe', grafico_2_opts);
+
+          // ascrollto('grafico-tipo-equipe');
+      }
+    });
+
+  }).submit();
+
+  </script>
+
+{% endblock %}

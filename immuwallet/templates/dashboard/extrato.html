@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+	<head>
+    <!-- <meta charset="utf-8"> -->
+		<style>
+      @page {
+          size: a4 landscape;
+          @frame content_frame {          /* Content Frame */
+              left: 60pt; width: 720pt; top: 60pt; height: 420pt;
+            }
+          }
+			body{
+				font-family: "Arial", Times, serif;
+        font-weight: bold;
+				font-size: 12px;
+			}
+      .header {
+        text-align: center;
+        font-size: 14px;
+      }
+			.title {
+        font-size: 14px;
+      	text-decoration: underline;
+				margin-top: 50px;
+				margin-bottom: 10px;
+			}
+			.block_info{
+				text-align: center;
+			}
+			th {
+				background-color: #000;
+				color: white;
+			}
+			table {
+				border: 1px solid black;
+			}
+      th{
+        padding-top: 0.2em;
+      }
+      td{
+        padding-top: 0.5em;
+				font-weight: 300;
+      }
+    </style>
+  </head>
+
+  <body>
+    <keep-in-frame>
+      <div class="header">
+          <img src="{% static "assets/img/Brastra.gif" %}" width="100px" height="100px"/> <br/>
+        MINISTÉRIO DA SAÚDE <br/>
+        SECRETARIA DE ATENÇÃO À SAÚDE <br/>
+        DEPARTAMENTO DE ATENÇÃO BÁSICA <br/>
+        COORDENAÇÃO GERAL DE SAÚDE BUCAL  – CGSB<br/>
+        PROGRAMA NACIONAL DE MELHORIA DO ACESSO E DA QUALIDADE <br/>
+        DOS CENTROS DE ESPECIALIDADES ODONTOLÓGICAS (PMAQ-CEO) <br/></br>
+				Relatório Gerado em: {{now}}
+
+      </div>
+			<div class="block_info">
+	      <div class="title">
+					RELATÓRIO DE ENVIO DA AVALIAÇÃO EXTERNA
+				</div>
+				<table>
+					<tr>
+						<th>MUNICÍPIO</th>
+						<th>CNES</th>
+						<th>TIPO DE CEO</th>
+						<th>STATUS DA AVALIAÇÃO</th>
+					</tr>
+					<tr>
+						<td>{{unidade.unidade.municipio}}</td>
+						<td>{{unidade.unidade.cnes}}</td>
+						<td>{{unidade.unidade.tipo.tipo}}</td>
+						<td>{% if unidade.status == 0 %}NÃO ENVIADOS{% elif unidade.status == 1%}EM ANDAMENTO{% else %}ENVIADOS{% endif %}</td>
+					</tr>
+				</table>
+			</div>
+			<div class="block_info">
+		    <div class="title">
+					DETALHES DA AVALIAÇÃO DO CEO
+				</div>
+
+				<table>
+					<tr>
+						<th style="width: 120px">MÓDULO</th>
+                        <th >CNES CONTRATUALIZAÇÃO</th>
+                        <th style="width: 160px">NOVO CNES</th>
+						<th style="width: 140px">DATA DE ENVIO</th>
+						<th style="width: 140px">TEMPO DE APLICAÇÃO</th>
+						<th>CPF DO AVALIADOR</th>
+						<th>CPF DO SUPERVISOR</th>
+						<th style="width: 140px">DUPLICADA</th>
+						<th style="width: 140px">VALIDADA</th>
+					</tr>
+						{% for avaliacao in avaliacoes_cnes %}
+						<tr>
+							<td>{{avaliacao.modulo_aplicado}}</td>
+                            <td>{% if avaliacao.submissao__cnes_contratualizacao == 1 %}SIM{% else %}NÃO{% endif %}</td>
+                            <td>{% if avaliacao.submissao__novo_cnes != '998' %}{{avaliacao.submissao__novo_cnes}} {% else %} Não se aplica {% endif %}</td>
+							<td>{{avaliacao.submissao__data_recebimento_avaliacao|date:"d/m/Y H:i"}}</td>
+							<td>{{avaliacao.submissao__duracao|interval}}</td>
+							<td>{{avaliacao.entrevistador__cpf}}</td>
+							<td>
+								{% if not avaliacao.entrevistador__entrevistador__equipe__supervisor__usuario_ptr__cpf %}
+									{{avaliacao.entrevistador__supervisor__usuario_ptr__cpf}}
+								{% else %}
+									{{avaliacao.entrevistador__entrevistador__equipe__supervisor__usuario_ptr__cpf}}
+								{% endif %}
+								</td>
+							<td>{% if avaliacao.qtd_envios > 1 %}SIM{% else %}NÃO{% endif %}</td>
+							<td>{% if avaliacao.duplicada == 0 %}SIM{% else %}NÃO{% endif %}</td>
+						</tr>
+						{% empty %}
+							<td colspan="9">Não foram submetidas avaliações para o CNES do CEO</td>
+						{% endfor %}
+				</table>
+			</div>
+			<div class="block_info">
+			  <div class="title">
+					MÓDULOS PENDENTES
+				</div>
+			</div>
+			<ul style="font-weight: bold;">
+				{% for modulo in modulos_pendentes %}
+					<li>MÓDULO {{modulo}}</li>
+				{% empty %}
+					<li>NÃO HÁ MÓDULOS PENDENTES</li>
+				{% endfor %}
+			</ul>
+    </keep-in-frame>
+  </body>
+</html>

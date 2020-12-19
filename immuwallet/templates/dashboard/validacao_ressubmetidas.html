@@ -1,0 +1,238 @@
+{% extends 'dashboard/base_dashboard.html' %} {% load static %} {% load funcoes %} {% block content %}
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h3>Diferenças nas avaliações ressubmetidas</h3>
+            </div>
+            <div class="x_content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form method="post">
+                            {% csrf_token %}
+                            <ul class="errorlist">
+                                {% for erro in errors %}
+                                  <li>{{erro}}</li>
+                                {% endfor %}
+                            </ul>
+                            <div class="panel-scroll">
+                                <table class="validacao">
+                                  <tr>
+                                    <th>
+                                        <div class="repetidas">
+                                            <div class="title_repetidas headcol" id="codigo_pergunta">
+                                                <h3>Item</h3>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    {% for submissao in submissoes %}
+                                    <th>
+                                        <div class="repetidas">
+                                            <div class="title_repetidas">
+                                                <h3>
+                                                    <a class="link-ativo" nome-completo="{{submissao.avaliacao__entrevistador__nome}}"
+                                                     cpf="{{submissao.avaliacao__entrevistador__cpf}}" email="{{submissao.avaliacao__entrevistador__email}}" data-target="#myModal" data-toggle="modal">{{submissao.avaliacao__entrevistador__nome|truncatechars:25}} <i class="fa fa-info-circle fa-fw"></i>
+                                                    </a>
+                                                </h3>
+                                                <h6><i class="fa fa-calendar "></i> <strong> Enviada em {{submissao.data}}</strong></h6>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    {% endfor %}
+                                  </tr>
+                                  <tr class="lista">
+                                      <th class="headcol borda destacar-linha">CNES</th>
+                                      {% for submissao in submissoes %}
+                                      <td class="repetidas_body destacar-linha">
+                                          {{submissao.cnes}}
+                                      </td>
+                                      {% endfor %}
+                                  </tr>
+                                  <tr class="lista">
+                                      <th class="headcol borda destacar-linha">CNES CONTR.</th>
+                                      {% for submissao in submissoes %}
+                                      <td class="repetidas_body destacar-linha">
+                                          {{submissao.cnes_contratualizacao}}
+                                      </td>
+                                      {% endfor %}
+                                  </tr>
+                                  <tr class="lista">
+                                      <th class="headcol borda destacar-linha">NOVO CNES</th>
+                                      {% for submissao in submissoes %}
+                                      <td class="repetidas_body destacar-linha">
+                                          {{submissao.novo_cnes}}
+                                      </td>
+                                      {% endfor %}
+                                  </tr>
+                                  <tr class="lista">
+                                      <th class="headcol borda destacar-linha">APLICADO CEO</th>
+                                      {% for submissao in submissoes %}
+                                      <td class="repetidas_body destacar-linha">
+                                          {{submissao.aplicado_avaliacao_ceo}}
+                                      </td>
+                                      {% endfor %}
+                                  </tr>
+                                {% if not iguais %}
+                                    {% for respostas in lista %}
+                                    {% if respostas.0.resposta__pergunta__codigo %}
+                                      <tr>
+                                          <th class="headcol borda destacar-linha has-tooltip">{{respostas.0.resposta__pergunta__codigo}}
+                                              <span class="tooltiptext">{{respostas.0.pergunta_descricao}}</span>
+                                          </th>
+                                          {% for resposta in respostas %}
+                                          <td class="repetidas_body destacar-linha has-tooltip">
+                                              {{resposta.resposta__valor}}
+                                              <span class="tooltiptext">
+                                                {% if resposta.opcoes|tooltip|safe %}
+                                                    {{resposta.opcoes|tooltip|safe}}
+                                                {% else %}
+                                                  Manual
+                                                {% endif %}
+                                              </span>
+                                          </td>
+                                          {% endfor %}
+                                      </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                                  <tr class="lista">
+                                      <th></th>
+                                      {% for submissao in submissoes %}
+                                      <td>
+                                          <div class="repetidas_body" id="div-validar">
+                                              <div class="btn-validar">
+                                                  <span>NÃO SELECIONADA</span>
+                                                  <input  class="hide" type="checkbox" name="submissao" value="{{submissao.id}}" {% if submissao.foi_selecionada == 1 %} checked="checked" {%endif%} />
+                                              </div>
+                                          </div>
+                                      </td>
+                                      {% endfor %}
+                                  </tr>
+                                </table>
+                            </div>
+                            <input type="submit" class=" btn btn-primary pull-right" style="margin-top:20px;" value="Confirmar" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Dados do entrevistador</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table/ style="width:100%; font-size:14px;">
+                        <tr>
+                            <th class="nome"><i class="fa fa-user"></i> Nome completo: </th>
+                            <th class="cpf"><i class="fa fa-credit-card"></i> CPF: </th>
+                            <th class="email"><i class="fa fa-envelope"></i> E-mail: </th>
+                        </tr>
+                        </table>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %} {% block script %}
+<script>
+    $(document).ready(function() {
+        var table = $('.table1').DataTable({
+            "bJQueryUI": true,
+            "oLanguage": {
+                "sProcessing": "Processando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "Não foram encontrados resultados",
+                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros",
+                "sInfoFiltered": "",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "oPaginate": {
+                    "sFirst": "Primeiro",
+                    "sPrevious": "Anterior",
+                    "sNext": "Seguinte",
+                    "sLast": "Último"
+                }
+            }
+        });
+
+        $(".validar").click(function() {
+            var linha = '<tr>' + $(this).parent().parent().html() + '</tr>';
+            $("#table-modal tr:not(:first)").remove();
+            $('#table-modal').append(linha + linha);
+            $('#avaliacao-duplicada').modal('show');
+        });
+    });
+
+    for (var i = 0; i < $(".linha").length; i++) {
+        if (i % 2 == 0) {
+            $(".linha").eq(i).css('background-color', '#bfbfbf');
+        }
+    }
+
+    $("input[type=checkbox]:checked").parent().addClass('blue-verified').find('span').text('SELECIONADA');
+</script>
+<script>
+    $('.link-ativo').on('click', function() {
+        var nome = $(this).attr('nome-completo');
+        var cpf = $(this).attr('cpf');
+        var email = $(this).attr('email');
+        $('th.nome').text(' Nome completo: ' + nome);
+        $('th.cpf').text(' CPF: ' + cpf);
+        $('th.email').text(' E-mail: ' + email);
+    });
+
+    $("input[type=checkbox]").on("click", function() {
+        if ($(this).prop('checked')) {
+            $(this).parent().css('background-color', '#5cb85c');
+        } else {
+            $(this).parent().css('background-color', '#ffffff');
+        }
+    });
+
+    $('.btn-validar').on('click', function() {
+        var text = $(this).children('span').text()
+        {% if modulo != 'III' %}
+        if (text == "NÃO SELECIONADA"){
+          for(var i=0; i<$('.btn-validar').length;i++){
+            $('.btn-validar').eq(i).children('span').text("NÃO SELECIONADA");
+            if ($('.btn-validar').eq(i).hasClass("blue-verified")) {
+              $('.btn-validar').eq(i).removeClass("blue-verified")
+            }
+            $('.btn-validar').eq(i).children('input[type=checkbox]').prop('checked', false);
+          }
+        }
+        {% endif %}
+        $(this).toggleClass("blue-verified");
+        $(this).children('span').text(text == "NÃO SELECIONADA" ? "SELECIONADA" : "NÃO SELECIONADA")
+        $(this).children('input[type=checkbox]').prop('checked', text == "NÃO SELECIONADA" ? true : false);
+    });
+
+    $('.destacar-linha').hover(
+        function() {
+            $(this).parent().children('td').css('background-color', '#cccccc');
+            $(this).parent().css('background-color', '#cccccc');
+        },
+        function() {
+            $(this).parent().children('td').css('background-color', '#ffffff');
+            $(this).parent().css('background-color', '#ffffff');
+        }
+    );
+</script>
+{% include 'common/scroolbar.html' %} {% endblock %}

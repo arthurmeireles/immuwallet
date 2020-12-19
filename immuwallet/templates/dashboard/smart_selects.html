@@ -1,0 +1,70 @@
+{% load static %}
+
+<script src="{% static "smart-selects/admin/js/chainedfk.js" %}"></script>
+<script src="{% static "smart-selects/admin/js/chainedm2m.js" %}"></script>
+<script>
+    $('select').select2({
+      placeholder: "Selecionar",
+      allowClear: true,
+    });
+
+    chainedfk.init = function(chainfield, url, id, init_value, empty_label, auto_choose) {
+        var fill_field = this.fill_field;
+
+        if(!$(chainfield).hasClass("chained")){
+            var val = $(chainfield).val();
+            fill_field(val, $(id).val(), id, url, empty_label, auto_choose);
+        }
+        $(chainfield).change(function(){
+            var start_value = $(id).val();
+            var val = $(this).val();
+            $(id).select2('destroy');
+            fill_field(val, start_value, id, url, empty_label, auto_choose);
+            $(id).select2({
+              placeholder: "Selecionar",
+              allowClear: true,
+            });
+        })
+        if (typeof(dismissAddAnotherPopup) !== 'undefined') {
+            var oldDismissAddAnotherPopup = dismissAddAnotherPopup;
+            dismissAddAnotherPopup = function(win, newId, newRepr) {
+                oldDismissAddAnotherPopup(win, newId, newRepr);
+                if (windowname_to_id(win.name) == chainfield) {
+                    $(chainfield).change();
+                }
+            }
+        }
+    }
+
+    chainedm2m.init = function(chainfield, url, id, value, auto_choose) {
+        var initial_parent = $(chainfield).val();
+        var initial_value = value;
+
+        if(!$(chainfield).hasClass("chained")){
+            var val = $(chainfield).val();
+            this.fill_field(val, initial_value, id, url, initial_parent, auto_choose);
+        }
+        var fill_field = this.fill_field;
+        $(chainfield).change(function(){
+            var val = $(this).val();
+            $(id).select2('destroy');
+            fill_field(val, initial_value, id, url, initial_parent, auto_choose);
+            $(id).select2({
+              placeholder: "Selecionar",
+              allowClear: true,
+            });
+        })
+
+        // allait en bas, hors du documentready
+        if (typeof(dismissAddAnotherPopup) !== 'undefined') {
+            var oldDismissAddAnotherPopup = dismissAddAnotherPopup;
+            dismissAddAnotherPopup = function(win, newId, newRepr) {
+                oldDismissAddAnotherPopup(win, newId, newRepr);
+                if ("#" + windowname_to_id(win.name) == chainfield) {
+                    $(chainfield).change();
+                }
+            }
+        }
+
+    }
+</script>

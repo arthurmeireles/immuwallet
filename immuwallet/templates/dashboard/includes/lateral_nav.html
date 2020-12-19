@@ -1,0 +1,24 @@
+{% load static %}
+<div class="left_col scroll-view">
+    <div class="navbar nav_title" style="border: 0;">
+        <a href="/dashboard" class="site_title">
+            <img src="{% static 'assets/img/ufrn.png' %}" alt="" class="img-responsive center-block img-logo" />
+        </a>
+    </div>
+    <div class="clearfix">
+    </div>
+    <!-- sidebar menu -->
+    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+        <div class="menu_section">
+            <ul class="nav side-menu">
+                <li>
+                    <a href="{% url 'dashboard:index' %}" style="color: #424242;"><i class="fa fa-home aux-menu"></i> Início</a>
+                </li>
+                <li>
+                    <a href="{% url 'dashboard:gerenciar_usuarios' %}" style="color: #424242;"><i class="fa fa-gear aux-menu"></i>Gerenciar usuários</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- /sidebar menu -->
+</div>

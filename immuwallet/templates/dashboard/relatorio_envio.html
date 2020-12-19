@@ -1,0 +1,207 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static %}
+{% load funcoes %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Relatório de Envio</h2>
+      <hr>
+    </div>
+
+    <!-- começa aqui -->
+    <div class="col-md-12">
+      <div class="bs-example">
+        <div class="x_panel title">
+          <div class="x_title">
+            <h3>Filtrar</h3>
+          </div>
+
+          <div class="x_content">
+            {% crispy form %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <div class="bs-example">
+        <div class="x_panel title">
+          <div class="x_title">
+            <h3>CEOs avaliados</h3>
+          </div>
+
+          <table class="table table-hover table-striped table-bordered table1 dataTable no-footer" width="100%" id="tabela_equipes">
+            <thead>
+              <tr>
+                {% if not relatorio_usuario %}
+                <th>Município</th>
+                <th>CNES</th>
+                <th>Tipo</th>
+                <th>Status da Avaliação</th>
+                {% else %}
+                <th>Município</th>
+                <th>IES Principal</th>
+                <th>CNES</th>
+                <th>Módulos Enviados</th>
+                {% endif %}
+                <th>Extrato</th>
+              </tr>
+            </thead>
+          </table>
+          <form id="btn-download" action="{% url 'dashboard:download_relatorio_cnes_ine' %}" method="post">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-actions">
+                  <input type="submit" name="submit" value="Baixar relatório detalhado" class="btn btn-primary pull-right">
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="display: none" class="se-pre-con"></div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+function search() {
+
+  if (search.table !== undefined)
+  search.table.destroy();
+
+  search.table = $('#tabela_equipes').DataTable({
+    "processing": true, "searchDelay": 350,
+    "serverSide": true,
+    "responsive": true,
+    "processing": true,
+    "bLengthChange": false,
+    "pagingType": "simple_numbers",
+    "iDisplayLength": 10,
+    "sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',
+    "language": {
+      "url": "//cdn.datatables.net/plug-ins/1.10.11/i18n/Portuguese-Brasil.json"
+    },
+    "bProcessing": true,
+    "columnDefs": [ {
+          "targets": -1,
+          "data": null,
+          "orderable": false,
+          "render": function(data, type, full, meta){
+             if(type === 'display'){
+
+               {% if not relatorio_usuario %}
+               var url = "{% url 'dashboard:extrato_ine' 0 %}".replace(/\d+\/$/, full[1]);
+               {% else %}
+               var url = "{% url 'dashboard:extrato_usuarios' 0 %}".replace(/\d+\/$/, full[2]);
+               {% endif %}
+
+               data = '<a href="' + url + '" target="_blank"><button class="btn btn-primary center"><i class="fa fa-file-text-o" aria-hidden="true"></i> Extrato de avaliação</button></a>';
+             }
+             return data;
+          }
+     }],
+    "ajax": $.fn.dataTable.pipeline({
+      url: '',
+      method: 'POST',
+      data: $('form').serializeJSON(),
+      pages: 5,
+    })
+  });
+}
+
+$(document).ready(function(){
+  function s2ab(s) {
+    var buf = new ArrayBuffer(s.length);
+    var view = new Uint8Array(buf);
+    for (var i=0; i!=s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+    return buf;
+  }
+
+  $("form:last").submit(function(event){
+      event.preventDefault();
+
+       if ($(this).prop('recebido') == false){
+         return;
+       }
+
+ 		  $(".se-pre-con").fadeIn("slow");
+
+       var xhr = new XMLHttpRequest();
+       xhr.open($(this).attr('method'), $(this).attr('action'), true);
+       xhr.responseType = 'blob';
+
+       var form = this;
+
+       xhr.onload = function(e) {
+           if (this.status == 200) {
+
+               // Nome do arquivo
+               var filename = "";
+               var disposition = this.getResponseHeader('Content-Disposition');
+               if (disposition && disposition.indexOf('attachment') !== -1) {
+                  var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                  var matches = filenameRegex.exec(disposition);
+                  if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
+               }
+
+               var blob = new Blob([this.response], {type: 'application/vnd.ms-excel'});
+               var url = URL.createObjectURL(blob);
+               var a = document.createElement("a");
+               a.href = url;
+               a.download = filename;
+               document.body.appendChild(a);
+               a.click();
+               delete a;
+           }else{
+             console.log('erro');
+           }
+
+           $(form).prop('recebido', true);
+           $(".se-pre-con").fadeOut("fast");
+
+       };
+
+       $(this).prop('recebido', false);
+       xhr.send(new FormData($('form:first')[0]));
+  });
+
+  (function($) {
+      var chainfield = "#id_estado";
+      var url = "{% url 'filtro-submissao-municipos' '__' %}".replace(/\/\w+$/, '')
+      var id = "#id_cidade";
+      var value = undefined;
+      var auto_choose = false;
+      var empty_label = "Todas";
+
+      $(document).ready(function() {
+        chainedfk.init(chainfield, url, id, value, empty_label, auto_choose);
+      });
+  })(jQuery || django.jQuery);
+
+  (function($) {
+      var chainfield = "#id_cidade";
+      var url = "//{{ BASE_URL }}" + "/chaining/filter/common/UnidadeSaude/municipio/dashboard/Dashboard/unidade";
+      var id = "#id_cnes";
+      var value = undefined;
+      var auto_choose = false;
+      var empty_label = "Todos";
+
+      $(document).ready(function() {
+        chainedfk.init(chainfield, url, id, value, empty_label, auto_choose);
+      });
+  })(jQuery || django.jQuery);
+
+  search();
+  $('form:first').submit(function(evt){
+    evt.preventDefault();
+    search();
+  })
+});
+</script>
+{% endblock %}

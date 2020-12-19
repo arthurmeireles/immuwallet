@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <style>
+      body{
+        font-family: 'Helvetica', 'Arial';
+      }
+    </style>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Relatório de Envio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+    <table style="background-color: #D9D9D9; width: 100%">
+        <tr>
+            <td style="text-align: center;" colspan="10">
+                <div style="margin-left: 35%; margin-right: 35%; margin-top: 3%;">
+                    <img src="http://dabsistemas.saude.gov.br/sistemas/pmaqV2/public/img/logo_sistema.png" alt="Logo PMAQ" height="24%" width="72%">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="10">
+                <div style="margin:5%; margin-top: 2%;">
+                    <h4> Olá, {{nome}}
+                    </h4>
+                    <p>
+                        Nós recebemos uma solicitação de geração do Relatório de Envio dos módulos das equipes participantes do 3º Ciclo do PMAQ{%if filtros %} com o(s) seguinte(s) filtro(s): {% else %}. {% endif %}
+                    </p>
+                    <ul>
+                    {% for filtro in filtros %}
+                        <li><strong>{{filtro.nome }}: </strong>{{filtro.valor}}</li>
+                    {% endfor %}
+                    </ul>
+                    <p>O relatório gerado encontra-se anexo nesse e-mail.</p>
+                    <p>Atenciosamente,
+                        <br/>Equipe PMAQ
+                    </p>
+
+                    <br/>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: center;" colspan="10">
+                <div style="margin-left: 10%; margin-right: 10%; margin-top: 3%;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Logo_SUS.svg/1280px-Logo_SUS.svg.png" alt="Logo PMAQ" height="5%" width="21%" style="margin-right: 5%">
+                    <img src="http://www.dca.ufrn.br/images/UFRN1t.gif" alt="Logo PMAQ" height="5%" width="21%">
+                    <img src="https://avasus.ufrn.br/pluginfile.php/1/instituicao/foto/18/c9a09fc8-1879-4942-9df3-d97c72ec10c6.png" alt="Logo PMAQ" height="5%" width="21%" style="margin-left: 5%">
+                </div>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

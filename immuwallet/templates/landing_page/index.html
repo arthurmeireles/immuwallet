@@ -1,0 +1,523 @@
+<!doctype html>
+{% load static %}
+
+<html class="no-js" lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+
+    <!--====== Title ======-->
+    <title>NEED Medidor </title>
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--====== Favicon Icon ======-->
+    <link rel="shortcut icon" href="{% static 'landing_page/assets/images/favicon.png' %}" type="image/png">
+
+    <!--====== Magnific Popup CSS ======-->
+    <link rel="stylesheet" href="{% static 'landing_page/assets/css/magnific-popup.css' %}">
+
+    <!--====== Slick CSS ======-->
+    <link rel="stylesheet" href="{% static 'landing_page/assets/css/slick.css' %}">
+
+    <!--====== Line Icons CSS ======-->
+    <link rel="stylesheet" href="{% static 'landing_page/assets/css/LineIcons.css' %}">
+
+    <!--====== Bootstrap CSS ======-->
+    <link rel="stylesheet" href="{% static 'landing_page/assets/css/bootstrap.min.css' %}">
+
+    <!--====== Default CSS ======-->
+    <link rel="stylesheet" href="{% static 'landing_page/assets/css/default.css' %}">
+
+    <!--====== Style CSS ======-->
+    <link rel="stylesheet" href="{% static 'landing_page/assets/css/style.css' %}">
+
+</head>
+
+<body>
+<!--[if IE]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+  <![endif]-->
+
+<!--====== PRELOADER PART START ======-->
+
+<div class="preloader">
+    <div class="loader">
+        <div class="ytp-spinner">
+            <div class="ytp-spinner-container">
+                <div class="ytp-spinner-rotator">
+                    <div class="ytp-spinner-left">
+                        <div class="ytp-spinner-circle"></div>
+                    </div>
+                    <div class="ytp-spinner-right">
+                        <div class="ytp-spinner-circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--====== PRELOADER PART ENDS ======-->
+
+<!--====== NAVBAR TWO PART START ======-->
+
+<section class="navbar-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <nav class="navbar navbar-expand-lg ">
+
+                    <a class="navbar-brand" href="#">
+                        <img src="{% static 'landing_page/assets/images/logo.png' %}" alt="NEED">
+                    </a>
+
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTwo"
+                            aria-controls="navbarTwo" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="toggler-icon"></span>
+                        <span class="toggler-icon"></span>
+                        <span class="toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse sub-menu-bar" id="navbarTwo">
+                        <!-- <ul class="navbar-nav m-auto">
+                            <li class="nav-item active"><a class="page-scroll" href="#home">Residencial</a></li>
+                            <li class="nav-item"><a class="page-scroll" href="#services">Empresarial</a></li>
+                            <li class="nav-item"><a class="page-scroll" href="#services">Consumo</a></li>
+                        </ul> -->
+                    </div>
+
+                    <div class="navbar-btn d-none d-sm-inline-block">
+                        <ul>
+                            <li><a class="solid" href=" http://api.whatsapp.com/send?1=pt_BR&amp;phone=5584996687815"
+                                   target="_blank">
+                                <i class="lni lni-whatsapp mr-2"></i>Fale conosco</a></li>
+                        </ul>
+                    </div>
+                    <div class="navbar-btn d-none d-sm-inline-block">
+                        <ul>
+                            <li><a class="solid" href="{% url 'dashboard:index' %}">Área do cliente</a></li>
+                        </ul>
+                    </div>
+                </nav> <!-- navbar -->
+            </div>
+        </div> <!-- row -->
+    </div> <!-- container -->
+</section>
+
+<!--====== NAVBAR TWO PART ENDS ======-->
+
+<!--====== SLIDER PART START ======-->
+
+<section id="home" class="slider_area">
+    <div id="carouselThree" class="carousel slide" data-ride="carousel">
+        <!-- <ol class="carousel-indicators">
+            <li data-target="#carouselThree" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselThree" data-slide-to="1"></li>
+            <li data-target="#carouselThree" data-slide-to="2"></li>
+        </ol> -->
+
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="slider-content">
+                                <h1 class="title">Medidor de Energia
+                                    <span class="d-block" style="color: #ff4992;">NEED</span>
+                                </h1>
+                                <p class="text">Monitore sua energia de qualquer lugar e a qualquer momento com nosso
+                                    medidor inteligente</p>
+{#                                <ul class="slider-btn rounded-buttons">#}
+{#                                    <li><a class="main-btn rounded-two" href="#">Saiba mais</a></li>#}
+{#                                </ul>#}
+                            </div>
+                        </div>
+                    </div> <!-- row -->
+                </div> <!-- container -->
+                <div class="slider-image-box d-none d-lg-flex align-items-center">
+                    <div class="slider-image">
+                        <img src="{% static 'landing_page/assets/images/smart.png' %}" alt="Smarhouse">
+                    </div> <!-- slider-imgae -->
+                </div> <!-- slider-imgae box -->
+            </div> <!-- carousel-item -->
+
+        </div>
+
+        <!-- <a class="carousel-control-prev" href="#carouselThree" role="button" data-slide="prev">
+            <i class="lni lni-arrow-left"></i>
+        </a>
+        <a class="carousel-control-next" href="#carouselThree" role="button" data-slide="next">
+            <i class="lni lni-arrow-right"></i>
+        </a> -->
+    </div>
+</section>
+
+<!--====== SLIDER PART ENDS ======-->
+
+<!--====== FEATRES TWO PART START ======-->
+<section id="features" class="features-area bg-white pt-110">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="section-title text-center pb-25">
+                    <h3 class="title">Monitoramento online</h3>
+                    <p class="text">Acompanhe em tempo real sua energia, recebendo recomendações e alertas inteligentes
+                        para melhorar seu consumo e/ou sua geração.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <div class="features-items">
+                    <div class="single-features features-color-1 d-sm-flex mt-30 wow fadeInUpBig"
+                         data-wow-duration="1.3s" data-wow-delay="0.2s"
+                         style="visibility: visible; animation-duration: 1.3s; animation-delay: 0.2s; animation-name: fadeInUpBig;">
+                        <div class="features-icon d-flex justify-content-center align-items-center">
+                            <i class="lni lni-home"></i>
+                        </div>
+                        <div class="features-content media-body">
+                            <h4 class="features-title">Consumo Residencial</h4>
+                            <p class="text">Monitore o seu consumo e receba recomendações e alertas inteligentes de
+                                acordo com o quanto você quer pagar na conta de energia.</p>
+                        </div>
+                    </div>
+                    <div class="single-features features-color-2 d-sm-flex mt-30 wow fadeInUpBig"
+                         data-wow-duration="1.3s" data-wow-delay="0.4s"
+                         style="visibility: visible; animation-duration: 1.3s; animation-delay: 0.4s; animation-name: fadeInUpBig;">
+                        <div class="features-icon d-flex justify-content-center align-items-center">
+                            <i class="lni lni-apartment"></i>
+                        </div>
+                        <div class="features-content media-body">
+                            <h4 class="features-title">Consumo Empresarial</h4>
+                            <p class="text">Monitore o consumo de cada setor da sua empresa e descubra como economizar,
+                                recebendo recomendações de acordo com sua meta de economia.</p>
+                        </div>
+                    </div>
+                    <div class="single-features features-color-3 d-sm-flex mt-30 wow fadeInUpBig"
+                         data-wow-duration="1.3s" data-wow-delay="0.6s"
+                         style="visibility: visible; animation-duration: 1.3s; animation-delay: 0.6s; animation-name: fadeInUpBig;">
+                        <div class="features-icon d-flex justify-content-center align-items-center">
+                            <i class="lni lni-bolt"></i>
+                        </div>
+                        <div class="features-content media-body">
+                            <h4 class="features-title">Geração de Energia</h4>
+                            <p class="text">Monitore a eficiência da sua usina, descubra quando realizar manutenções
+                                antes de ter prejuízos e analise a rentabilidade do seu investimento.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 d-flex justify-content-center">
+                <div class="about-image mt-50 wow fadeInLeftBig" data-wow-duration="1.3s" data-wow-delay="0.5s">
+                    <div class="about-shape"></div>
+                    <img class="app" src="{% static 'landing_page/assets/images/medidor.png' %}" alt="app">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="services" class="features-area dark">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                <div class="section-title text-center pb-10">
+                    <h3 class="title">Reduza sua conta de energia!</h3>
+                    <p class="text">Monitore seu consumo quando quiser e receba alertas e recomendações de acordo com o
+                        quanto você quer economizar!</p>
+                </div> <!-- row -->
+            </div>
+        </div> <!-- row -->
+        <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-7 col-sm-9">
+                <div class="single-features mt-40">
+                    <div class="features-title-icon d-flex justify-content-between">
+                        <h4 class="features-title"><a href="#">Na palma da mão</a></h4>
+                        <div class="features-icon">
+                            <i class="lni lni-mobile"></i>
+                            <img class="shape" src="{% static 'landing_page/assets/images/f-shape-1.svg' %}"
+                                 alt="Shape">
+                        </div>
+                    </div>
+                    <div class="features-content">
+                        <p class="text">Você pode analisar o seu consumo a qualquer momento através do seu celular ou
+                            computador!
+                        </p>
+                    </div>
+                </div> <!-- single features -->
+            </div>
+            <div class="col-lg-4 col-md-7 col-sm-9">
+                <div class="single-features mt-40">
+                    <div class="features-title-icon d-flex justify-content-between">
+                        <h4 class="features-title"><a href="#">Qualidade da energia</a></h4>
+                        <div class="features-icon">
+                            <i class="lni lni-pulse"></i>
+                            <img class="shape" src="{% static 'landing_page/assets/images/f-shape-1.svg' %}"
+                                 alt="Shape">
+                        </div>
+                    </div>
+                    <div class="features-content">
+                        <p class="text">Analise dados de tensão, corrente e fator de potência. Receba alarmes de tensões
+                            e correntes críticas!</p>
+                    </div>
+                </div> <!-- single features -->
+            </div>
+            <div class="col-lg-4 col-md-7 col-sm-9">
+                <div class="single-features mt-40">
+                    <div class="features-title-icon d-flex justify-content-between">
+                        <h4 class="features-title"><a href="#">Melhore seu consumo</a></h4>
+                        <div class="features-icon">
+                            <i class="lni lni-wallet"></i>
+                            <img class="shape" src="{% static 'landing_page/assets/images/f-shape-1.svg' %}"
+                                 alt="Shape">
+                        </div>
+                    </div>
+                    <div class="features-content">
+                        <p class="text">Receba recomendações inteligentes que te ajudem a atingir sua meta de
+                            economia!</p>
+                    </div>
+                </div> <!-- single features -->
+            </div>
+        </div> <!-- row -->
+    </div> <!-- container -->
+</section>
+
+<section id="services" class="features-area alt">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                <div class="section-title text-center pb-10">
+                    <h3 class="title">Ideal para sua empresa!</h3>
+                    <p class="text">Monitore o consumo de cada departamento individualmente e descubra onde e como
+                        encomizar!</p>
+                </div> <!-- row -->
+            </div>
+        </div> <!-- row -->
+        <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-7 col-sm-9">
+                <div class="single-features mt-40">
+                    <div class="features-title-icon d-flex justify-content-between">
+                        <h4 class="features-title"><a href="#">Dashboards online</a></h4>
+                        <div class="features-icon">
+                            <i class="lni lni-display-alt"></i>
+                            <img class="shape" src="{% static 'landing_page/assets/images/f-shape-1.svg' %}"
+                                 alt="Shape">
+                        </div>
+                    </div>
+                    <div class="features-content">
+                        <p class="text">Tenha dashboards incríveis no seu celular que mostram o perfil de consumo da sua
+                            empresa.</p>
+                    </div>
+                </div> <!-- single features -->
+            </div>
+            <div class="col-lg-4 col-md-7 col-sm-9">
+                <div class="single-features mt-40">
+                    <div class="features-title-icon d-flex justify-content-between">
+                        <h4 class="features-title"><a href="#">Relatórios</a></h4>
+                        <div class="features-icon">
+                            <i class="lni lni-bar-chart"></i>
+                            <img class="shape" src="{% static 'landing_page/assets/images/f-shape-1.svg' %}"
+                                 alt="Shape">
+                        </div>
+                    </div>
+                    <div class="features-content">
+                        <p class="text">Gere relatórios detalhados do consumo e da qualidade da energia de cada
+                            departamento.</p>
+                    </div>
+                </div> <!-- single features -->
+            </div>
+            <div class="col-lg-4 col-md-7 col-sm-9">
+                <div class="single-features mt-40">
+                    <div class="features-title-icon d-flex justify-content-between">
+                        <h4 class="features-title"><a href="#">Mais eficiência</a></h4>
+                        <div class="features-icon">
+                            <i class="lni lni-money-location"></i>
+                            <img class="shape" src="{% static 'landing_page/assets/images/f-shape-1.svg' %}"
+                                 alt="Shape">
+                        </div>
+                    </div>
+                    <div class="features-content">
+                        <p class="text">Descubra a melhor demanda a ser contratada e como melhorar o consumo de cada
+                            departamento</p>
+                    </div>
+                </div> <!-- single features -->
+            </div>
+        </div> <!-- row -->
+    </div> <!-- container -->
+</section>
+<!--====== FEATRES TWO PART ENDS ======-->
+
+<!--====== PORTFOLIO PART START ======-->
+
+<!-- <section id="portfolio" class="portfolio-area portfolio-four pb-100">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="section-title text-center pb-10">
+                    <h3 class="title">Adquira agora, deixe de ser besta!</h3>
+                    <p class="text">escrevi e saí correndo, pau no cu de quem tá lendo</p>
+                    <div class="light-rounded-buttons mt-30">
+                    <a href="#" rel="nofollow" class="main-btn light-rounded-two">Comprar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> -->
+
+<section id="features" class="features-area pt-110 bg-white">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="section-title text-center pb-25">
+                    <h3 class="title">Para sua usina de geração</h3>
+                    <p class="text">Monitore a produção da sua usina e garanta a melhor eficiência!</p>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="features-items">
+                    <div class="single-features features-color-1 d-sm-flex mt-30 wow fadeInUpBig"
+                         data-wow-duration="1.3s" data-wow-delay="0.2s"
+                         style="visibility: visible; animation-duration: 1.3s; animation-delay: 0.2s; animation-name: fadeInUpBig;">
+                        <div class="features-icon d-flex justify-content-center align-items-center">
+                            <i class="lni lni-bulb"></i>
+                        </div>
+                        <div class="features-content media-body">
+                            <h4 class="features-title">Geração x Consumo</h4>
+                            <p class="text">Compare o seu consumo com a sua geração e analise a rentabilidade do seu
+                                investimento.</p>
+                        </div>
+                    </div>
+                    <div class="single-features features-color-3 d-sm-flex mt-30 wow fadeInUpBig"
+                         data-wow-duration="1.3s" data-wow-delay="0.6s"
+                         style="visibility: visible; animation-duration: 1.3s; animation-delay: 0.6s; animation-name: fadeInUpBig;">
+                        <div class="features-icon d-flex justify-content-center align-items-center">
+                            <i class="lni lni-stats-up"></i>
+                        </div>
+                        <div class="features-content media-body">
+                            <h4 class="features-title">Qualidade da energia</h4>
+                            <p class="text">Verifique a qualidade da sua energia analisando os dados de tensão, corrente
+                                e fator de potência.</p>
+                        </div>
+                    </div>
+                    <div class="single-features features-color-2 d-sm-flex mt-30 wow fadeInUpBig"
+                         data-wow-duration="1.3s" data-wow-delay="0.4s"
+                         style="visibility: visible; animation-duration: 1.3s; animation-delay: 0.4s; animation-name: fadeInUpBig;">
+                        <div class="features-icon d-flex justify-content-center align-items-center">
+                            <i class="lni lni-warning"></i>
+                        </div>
+                        <div class="features-content media-body">
+                            <h4 class="features-title">Alertas</h4>
+                            <p class="text">Receba alertas de acordo com a sua produção e antecipe manutenções antes de
+                                ter prejuízos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center pb-0">
+                <div class="about-image wow fadeInLeftBig pt-0 ml-0" data-wow-duration="1.3s" data-wow-delay="0.5s">
+                    <div class="about-shape" style="right: -70px;"></div>
+                    <img class="app" src="{% static 'landing_page/assets/images/smartphone.png' %}" alt="app">
+                </div>
+            </div>
+        </div>
+</section>
+
+<!--====== PORTFOLIO PART ENDS ======-->
+
+
+<!--====== ABOUT PART START ======-->
+
+<section id="about" class="about-area dark">
+    <div class="section-title text-center pb-10">
+        <h3 class="title text-white">Solicite agora o seu medidor Need!</h3>
+        <p class="text text-white">O melhor preço do mercado com toda a informação que você precisa para economizar!</p>
+        <div class="light-rounded-buttons mt-30">
+            <a href=" http://api.whatsapp.com/send?1=pt_BR&amp;phone=5584996687815" target="_blank" rel="nofollow"
+               class="main-btn light-rounded-two"><i class="lni lni-whatsapp mr-2"></i>Quero comprar</a>
+        </div>
+    </div> <!-- section title -->
+</section>
+
+<!--====== ABOUT PART ENDS ======-->
+
+<!--====== FOOTER PART START ======-->
+
+<section class="footer-area footer-dark">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="footer-logo text-center">
+                    <a class="mt-30" href="index.html"><img src="{% static 'landing_page/assets/images/logo.png' %}"
+                                                            alt="Logo NEED"></a>
+                </div> <!-- footer logo -->
+                <!-- <ul class="social text-center mt-60">
+                    <li><a href="><i class="lni lni-facebook-filled"></i></a></li>
+                    <li><a href=""><i class="lni lni-twitter-original"></i></a></li>
+                    <li><a href=""><i class="lni lni-instagram-original"></i></a></li>
+                    <li><a href="#"><i class="lni lni-linkedin-original"></i></a></li>
+                </ul>  -->
+                <div class="footer-support text-center">
+                    <span class="number">+55 84 9 9668-7815</span>
+                    <span class="mail">suporte@needtecnologia.com</span>
+                </div>
+                <div class="copyright text-center mt-35">
+                    <p class="text">Feito com ❤️ em Natal/RN </p>
+                </div> <!--  copyright -->
+            </div>
+        </div> <!-- row -->
+    </div> <!-- container -->
+</section>
+
+<!--====== FOOTER PART ENDS ======-->
+
+<!--====== BACK TOP TOP PART START ======-->
+
+<a href="#" class="back-to-top"><i class="lni lni-chevron-up"></i></a>
+
+<!--====== BACK TOP TOP PART ENDS ======-->
+
+<!--====== PART START ======-->
+
+<!--
+    <section class="">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-">
+
+                </div>
+            </div>
+        </div>
+    </section>
+-->
+
+<!--====== PART ENDS ======-->
+
+
+<!--====== Jquery js ======-->
+<script src="{% static 'landing_page/assets/js/vendor/jquery-1.12.4.min.js' %}"></script>
+<script src="{% static 'landing_page/assets/js/vendor/modernizr-3.7.1.min.js' %}"></script>
+
+<!--====== Bootstrap js ======-->
+<script src="{% static 'landing_page/assets/js/popper.min.js' %}"></script>
+<script src="{% static 'landing_page/assets/js/bootstrap.min.js' %}"></script>
+
+
+<!--====== Isotope js ======-->
+<script src="{% static 'landing_page/assets/js/imagesloaded.pkgd.min.js' %}"></script>
+<script src="{% static 'landing_page/assets/js/isotope.pkgd.min.js' %}"></script>
+
+<!--====== Scrolling Nav js ======-->
+<script src="{% static 'landing_page/assets/js/jquery.easing.min.js' %}"></script>
+<script src="{% static 'landing_page/assets/js/scrolling-nav.js' %}"></script>
+
+<!--====== Main js ======-->
+<script src="{% static 'landing_page/assets/js/main.js' %}"></script>
+
+</body>
+
+</html>

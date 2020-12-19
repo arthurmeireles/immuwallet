@@ -1,0 +1,91 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Lista de Avaliações Ressubmetidas</h2>
+      <hr>
+    </div>
+
+    <div class="col-md-12">
+      <div class="bs-example">
+        <div class="x_panel title">
+          <div class="x_title">
+            <h3>Avaliações realizadas</h3>
+          </div>
+
+          <div class="container-fluid table-responsive" id="toggle_container">
+              <table class="table table-hover table-striped table-bordered table1" id="tabela-avaliacoes-ressubmetidas" width="100%">
+                  <thead>
+                      <tr>
+                          <th>Módulo Aplicado</th>
+                          <th>Entrevistador</th>
+                          <th>UF(s)</th>
+                          <th>Município(s)</th>
+                          <th>CNES</th>
+                          <th>Data do último envio</th>
+                          <th>Repetidas</th>
+                          <th>Verificada?</th>
+                          <th>Ação</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+              </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+<script>
+  function search() {
+
+    if (search.table !== undefined)
+      search.table.destroy();
+
+    search.table = $('#tabela-avaliacoes-ressubmetidas').DataTable( {
+      "processing": true,
+      "searchDelay": 350,
+      "serverSide": true,
+      "responsive": true,
+      "bLengthChange": false,
+      "pagingType": "simple_numbers",
+      "iDisplayLength": 10,
+      "sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',
+      "language": {
+        "url": "//cdn.datatables.net/plug-ins/1.10.11/i18n/Portuguese-Brasil.json"
+      },
+      "columnDefs": [ {
+          "targets": -1,
+          "data": null,
+          "orderable": false,
+          "sClass": "action",
+          "render": function(data, type, full, meta){
+             return `
+             <form method="get" action="{% url 'dashboard:validacao_ressubmetidas' %}">
+                 <input type="hidden" name="avaliacao" value="${full[8]}"/>
+               <a href="{% url 'dashboard:validacao_ressubmetidas' %}">
+                 <button type="Submit" class="btn btn-primary validar">Verificar</button>
+               </a>
+             </form>
+             `;
+          }
+       }],
+      "ajax": $.fn.dataTable.pipeline( {
+        url: '',
+        method: 'POST',
+        pages: 5,
+      } )
+    } );
+
+  }
+
+    $(document).ready(function() {
+        search();
+    });
+  </script>
+{% endblock %}

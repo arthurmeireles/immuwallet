@@ -1,0 +1,16 @@
+Django==3.0.4
+django-celery-beat
+django-extensions
+jupyter
+notebook
+djangorestframework
+sentry-sdk
+psycopg2
+django-localflavor
+django-crispy-forms
+channels
+channels-redis
+whitenoise
+drf_yasg
+django-prettyjson
+celery

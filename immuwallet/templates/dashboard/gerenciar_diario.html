@@ -1,0 +1,192 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-exclude">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Excluir diário de campo</h4>
+      </div>
+      <div class="modal-body">
+        <p>Você tem certeza que deseja excluir o diário de campo selecionado?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
+        <a class="link-exclude"><button type="button" class="btn btn-primary">Sim</button></a>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="row">
+    <div class="col-md-12">
+        {% if 'sucesso' in request.GET %}
+          <div class="alert alert-success">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+            <strong>Sucesso!</strong> O diário de campo selecionado foi excluído.
+          </div>
+        {% endif %}
+        {% if 'erro' in request.GET %}
+        <div class="alert alert-danger">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+          <strong>Erro!</strong> Impossível excluir o diário selecionado. Já existem feedbacks associados a ele.
+        </div>
+        {% endif %}
+        <h2>Visualizar Diários de Campo</h2>
+        <hr>
+    </div>
+    <div class="col-md-12">
+        <div class="bs-example">
+            <div class="x_panel title">
+                <div class="x_title">
+                    <h3>Pesquisar</h3>
+                </div>
+                <div class="x_content">
+                    {% crispy form %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="bs-example">
+      <div class="x_panel title">
+        <div class="x_title">
+          <h3>Diários encontrados</h3>
+        </div>
+          <table class="table table-hover table-striped table-bordered table1" width:"100%" id="tabela_diarios">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Município</th>
+                <th>Ação</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+          <a href="{% url 'dashboard:download-csv-diarios' %}" class="btn btn-primary pull-right">Baixar CSV</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'assets/js/vendor/bootstrap-datepicker.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $.fn.datepicker.dates['pt'] = {
+            days: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"],
+            daysShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"],
+            daysMin: ["Do", "Se", "Te", "Qu", "Qu", "Se", "Sa", "Do"],
+            months: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+            monthsShort: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+            today: "Hoje",
+            clear: "Limpar"
+        };
+
+        $.fn.datepicker.defaults.language = 'pt-BR';
+    });
+
+    {% if request.user.perfil.tipo_perfil == 'Gestor Federal' %}
+    (function($) {
+        var chainfield = "#id_universidade_principal";
+        var url = "//{{ BASE_URL }}" + "/chaining/filter/avaliacoes/ies_apoiadora/principal/common/ies_principal/id";
+        var id = "#id_universidade_apoiadora";
+        var value = undefined;
+        var auto_choose = false;
+        var empty_label = "Todas";
+
+        $(document).ready(function() {
+            chainedfk.init(chainfield, url, id, value, empty_label, auto_choose);
+        });
+    })(jQuery || django.jQuery);
+    {% endif %}
+
+    function search() {
+
+      if (search.table !== undefined)
+        search.table.destroy();
+
+      search.table = $('#tabela_diarios').DataTable( {
+        "processing": true, "searchDelay": 350,
+        "serverSide": true,
+        "responsive": true,
+        "bLengthChange": false,
+        "pagingType": "simple_numbers",
+        "iDisplayLength": 10,
+        "sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',
+        "language": {
+          "url": "//cdn.datatables.net/plug-ins/1.10.11/i18n/Portuguese-Brasil.json"
+        },
+        "columnDefs": [
+          {
+             "targets": -1,
+             "data": null,
+             "orderable": false,
+             "sClass": "action",
+             "render": function(data, type, full, meta){
+                if(type === 'display'){
+
+                  var urls = [
+                    {% if request.user.perfil.tipo_perfil != 'Gestor Federal' %}
+                      "{% url 'dashboard:remover-diario' 0 %}".replace(/\d+\/$/, full[5]),
+                      "{% url 'dashboard:editar-diario' 0 %}".replace(/\d+\/$/, full[5]),
+                      "{% url 'dashboard:visualizar-diario' 0 %}".replace(/\d+\/$/, full[5]),
+                    {% else %}
+                      "{% url 'dashboard:visualizar-diario' 0 %}".replace(/\d+\/$/, full[5])
+                    {% endif %}
+                  ];
+
+                  {% if request.user.perfil.tipo_perfil != 'Gestor Federal' %}
+                    data =  '<a  href="' + urls[2] + '" style="text-decoration: none; color: inherit">' +
+                          '<button class="btn btn-feedback"><i class="fa fa-eye" aria-hidden="true"></i> Visualizar</button>' +
+                     '</a>'
+                     + '<a href="' + urls[1] + '">' +
+                      '<button class="btn btn-primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</button>' +
+                      '</a>' +
+                     '<a>' +
+                          '<button class="btn btn-exclude" data-url="' + urls[0] + '"><i class="fa fa-times" aria-hidden="true"></i> Excluir</button>' +
+                     '</a>';
+                  {% else %}
+                    data = '<a  href="' + urls[0] + '" style="text-decoration: none; color: inherit">' +
+                          '<button class="btn btn-feedback"><i class="fa fa-eye" aria-hidden="true"></i> Visualizar</button>' +
+                     '</a>'
+                  {% endif %}
+                }
+                return data;
+             }
+          }, ],
+        "ajax": $.fn.dataTable.pipeline( {
+          url: '',
+          method: 'POST',
+          data: $('form').serializeJSON(),
+          pages: 5,
+        } )
+      } );
+    }
+
+    $(document).ready(function(){
+
+      $(document).on('click', '.btn-exclude', function(){
+        $('.link-exclude').attr('href', $(this).attr('data-url'));
+        $('#modal-exclude').modal('show');
+      });
+
+      search();
+
+      $('form').submit(function(evt){
+        evt.preventDefault();
+
+        search();
+      })
+    });
+</script>
+
+
+{% endblock %}

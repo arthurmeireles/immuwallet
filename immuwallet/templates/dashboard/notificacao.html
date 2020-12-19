@@ -1,0 +1,4 @@
+<p>
+  {{ entrevistador.nome }}, CPF {{entrevistador.cpf}}, {% if tipo == 1 %}submeteu uma avaliação duplicada{% else %}ressubmeteu uma avaliação{% endif %} para o múdulo {{modulo}} em {{data|date:'d/m/Y'}}.
+  <a href="{% if tipo == 1 %}{% url 'dashboard:validacao_repetidas' %}?ine={{ine}}&cnes={{cnes}}&modulo={{modulo}}{% else %}{% url 'dashboard:validacao_ressubmetidas' %}?avaliacao={{avaliacao}}{% endif %}">Verificar duplicadas</a>
+</p>

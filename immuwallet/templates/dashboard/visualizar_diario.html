@@ -1,0 +1,93 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>Diário de Campo <small>Detalhes e feedbacks</small></h2>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+
+        <section class="content invoice">
+          <!-- title row -->
+          <div class="row">
+            <div class="col-xs-12 invoice-header">
+              <h3>
+                  <i class="fa fa-edit"></i> Informações
+              </h3>
+            </div>
+            <!-- /.col -->
+          </div>
+          <!-- info row -->
+          <div class="row invoice-info" style="margin: 10px 0px -10px 10px">
+            <div class="col-sm-6 invoice-col">
+              <p> <strong> Data: </strong> {{ diario.data }}</p>
+              <p> <strong> Município: </strong> {{ diario.municipio }}</p>
+              <p> <strong> Cadastrado por: </strong> {{ diario.cadastrado_por }}  </p>
+            </div>
+            <!-- /.col -->
+            <div class="col-sm-6 invoice-col">
+              <p> <strong> CNES: </strong>
+                {% if diario.unidade %}
+                  {{diario.unidade}}
+                {% endif %}
+              </p>
+              <p> <strong> Equipes de campo: </strong>
+                {% for equipe_campo in diario.equipes_campo.all %}{{ equipe_campo.nome }} {% if forloop.counter < diario.equipes_campo.count %}| {% endif %}{% endfor %}
+              </p>
+            </div>
+            <div class="col-sm-12 invoice-col">
+              <p> <strong> Observação: </strong>
+                {% if diario.informacoes %}
+                  {{diario.informacoes}}
+                {% else %}
+                  Nenhuma observação feita.
+                {% endif %}
+              </p>
+            </div>
+          </div>
+          <hr>
+        </section>
+          <!-- /.row -->
+          <section class="content invoice">
+            <!-- title row -->
+            <div class="row">
+              <div class="col-xs-12 invoice-header">
+                <h3>
+                    <i class="fa fa-edit"></i> Feedbacks
+                </h3>
+              </div>
+              <!-- /.col -->
+            </div>
+            <!-- info row -->
+            <div class="row invoice-info" style="margin: 10px 0px -10px 10px">
+              <ul class="list-unstyled msg_list">
+                {% for feedback in diario.feedback_set.all %}
+                  <li>
+                    <a>
+                      <p>
+                        <strong>{{ feedback.entrevistador }}</strong>
+                        <small class="time">{{ feedback.data }}</small>
+                      </p>
+                      <span class="message">
+                        {{ feedback.texto }}
+                      </span>
+                    </a>
+                  </li>
+                {% empty %}
+                  Nenhum feedback enviado
+                {% endfor %}
+              </ul>
+            </div>
+          </section
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
