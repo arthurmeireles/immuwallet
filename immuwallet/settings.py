@@ -33,7 +33,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('SECRET_KEY', 'asfzc@xwrhwi2tnfn!c#i_^na6^nqs^!9q-9x$4%%#padmncsu')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', True)
+DEBUG = os.environ.get('DEBUG', '1') == '1'
 
 ALLOWED_HOSTS = [
     '*'
@@ -258,7 +258,7 @@ try:
 except ImportError:
     pass
 
-if os.environ.get('SENTRY', '') == 'True':
+if os.environ.get('SENTRY', '0') == '1':
     sentry_sdk.init(
         dsn="https://b6134bc81848461188b9c4b0176061c4@o407737.ingest.sentry.io/5277325",
         integrations=[DjangoIntegration()],
