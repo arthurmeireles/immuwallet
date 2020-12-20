@@ -98,7 +98,6 @@ class HorarioFuncionamento(models.Model):
         return f"{self.get_dia_semana_display()} das {self.hora_abre} às {self.hora_fecha}"
 
 
-
 class Usuario(AbstractUser):
 
     @property

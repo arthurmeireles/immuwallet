@@ -1,0 +1,347 @@
+[
+{
+  "model": "dashboard.estado",
+  "pk": "SGL",
+  "fields": {
+    "nome": "Estado",
+    "regiao": "R"
+  }
+},
+{
+  "model": "dashboard.municipio",
+  "pk": "ibge",
+  "fields": {
+    "nome": "Municipio",
+    "estado": "SGL"
+  }
+},
+{
+  "model": "dashboard.vacina",
+  "pk": "cov19pf",
+  "fields": {
+    "nome": "Vacina COVID19 Pfizer",
+    "tempo_aplicacao": 15
+  }
+},
+{
+  "model": "dashboard.vacina",
+  "pk": "cov19z",
+  "fields": {
+    "nome": "Vacina COVID19 AstraZeneca",
+    "tempo_aplicacao": 15
+  }
+},
+{
+  "model": "dashboard.estabelecimento",
+  "pk": "123",
+  "fields": {
+    "nome": "Estabelecimento",
+    "endereco": "Rua",
+    "municipio": "ibge"
+  }
+},
+{
+  "model": "dashboard.estabelecimento",
+  "pk": "124",
+  "fields": {
+    "nome": "Estabele",
+    "endereco": "Rua",
+    "municipio": "ibge"
+  }
+},
+{
+  "model": "dashboard.horariofuncionamento",
+  "pk": 9,
+  "fields": {
+    "dia_semana": 5,
+    "hora_abre": "08:00:00",
+    "hora_fecha": "12:00:00",
+    "data": null,
+    "estabelecimento": "124"
+  }
+},
+{
+  "model": "dashboard.horariofuncionamento",
+  "pk": 10,
+  "fields": {
+    "dia_semana": 0,
+    "hora_abre": "07:00:00",
+    "hora_fecha": "11:00:00",
+    "data": null,
+    "estabelecimento": "124"
+  }
+},
+{
+  "model": "dashboard.horariofuncionamento",
+  "pk": 11,
+  "fields": {
+    "dia_semana": 0,
+    "hora_abre": "14:00:00",
+    "hora_fecha": "18:00:00",
+    "data": null,
+    "estabelecimento": "124"
+  }
+},
+{
+  "model": "dashboard.usuario",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$180000$BFJMLQJwe7tT$R1d16nl9ZHuV+WS1LlRZL0xTvj2IWIdWyfIrOXQqf4I=",
+    "last_login": "2020-12-20T21:17:50.362Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "Diego",
+    "last_name": "Lema",
+    "email": "admyn@admin.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2020-12-18T17:26:58Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "dashboard.usuario",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$180000$nkehH2JIsq3o$CgeRkFCiCf6PBei3ZL55B1uvbfN9g1chm9GJTTBv0zM=",
+    "last_login": null,
+    "is_superuser": true,
+    "username": "admin2",
+    "first_name": "Dye",
+    "last_name": "Go",
+    "email": "admin@admin2.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2020-12-19T00:07:47.971Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "dashboard.usuario",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$180000$n9bgeZm5Ak1v$DANyS2mxdPllsuoBu3gS65SK3M/aZKiZn69SL5nT9xY=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "admin@admin.com",
+    "first_name": "admin",
+    "last_name": "admin",
+    "email": "admin@admin.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2020-12-19T13:36:04.063Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "dashboard.usuario",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$180000$ZvOFTYcXiPZo$fD55Rp3ERc7qgu1KeBHNEAqIdFE99NjaPunbxDgD6tI=",
+    "last_login": "2020-12-20T17:17:25.490Z",
+    "is_superuser": false,
+    "username": "oioi",
+    "first_name": "oioi",
+    "last_name": "oioi",
+    "email": "oioi@oioi.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2020-12-19T13:37:49.061Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "dashboard.usuario",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$180000$Y0bjzzpv7WSM$Hzw0sjdvvQvKCriLEeZdLEFC2xBGZ+eZCR1LNrvv1v4=",
+    "last_login": "2020-12-19T21:02:44.104Z",
+    "is_superuser": false,
+    "username": "oioioi",
+    "first_name": "oioioi",
+    "last_name": "oioioi",
+    "email": "oioioi@oioioi.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2020-12-19T13:38:57.356Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "dashboard.perfil",
+  "pk": 1,
+  "fields": {
+    "tipo": 2,
+    "estabelecimento": "124"
+  }
+},
+{
+  "model": "dashboard.perfil",
+  "pk": 2,
+  "fields": {
+    "tipo": 1,
+    "estabelecimento": "123"
+  }
+},
+{
+  "model": "dashboard.perfil",
+  "pk": 3,
+  "fields": {
+    "tipo": 0,
+    "estabelecimento": "123"
+  }
+},
+{
+  "model": "dashboard.horamarcada",
+  "pk": 2,
+  "fields": {
+    "data": "2020-12-20T17:00:00Z",
+    "status": 1,
+    "comentario": "",
+    "vacina": "cov19z",
+    "estabelecimento": "123",
+    "paciente": 1,
+    "atendente": null,
+    "marcado_em": "2020-12-19T17:14:54.770Z"
+  }
+},
+{
+  "model": "dashboard.horamarcada",
+  "pk": 3,
+  "fields": {
+    "data": "2020-12-20T20:31:00Z",
+    "status": 3,
+    "comentario": "",
+    "vacina": "cov19z",
+    "estabelecimento": "124",
+    "paciente": 1,
+    "atendente": null,
+    "marcado_em": "2020-12-19T20:31:21.661Z"
+  }
+},
+{
+  "model": "dashboard.horamarcada",
+  "pk": 4,
+  "fields": {
+    "data": "2020-12-21T21:01:00Z",
+    "status": 0,
+    "comentario": "",
+    "vacina": "cov19pf",
+    "estabelecimento": "123",
+    "paciente": 4,
+    "atendente": null,
+    "marcado_em": "2020-12-19T21:01:04.712Z"
+  }
+},
+{
+  "model": "dashboard.horamarcada",
+  "pk": 5,
+  "fields": {
+    "data": "2020-12-30T21:02:00Z",
+    "status": 0,
+    "comentario": "",
+    "vacina": "cov19z",
+    "estabelecimento": "124",
+    "paciente": 5,
+    "atendente": null,
+    "marcado_em": "2020-12-19T21:03:00.680Z"
+  }
+},
+{
+  "model": "dashboard.horamarcada",
+  "pk": 6,
+  "fields": {
+    "data": "2020-12-20T17:17:00Z",
+    "status": 0,
+    "comentario": "",
+    "vacina": "cov19z",
+    "estabelecimento": "123",
+    "paciente": 4,
+    "atendente": null,
+    "marcado_em": "2020-12-20T17:22:44.322Z"
+  }
+},
+{
+  "model": "dashboard.horamarcada",
+  "pk": 7,
+  "fields": {
+    "data": "2020-12-26T17:38:00Z",
+    "status": 0,
+    "comentario": "",
+    "vacina": "cov19z",
+    "estabelecimento": "124",
+    "paciente": 1,
+    "atendente": null,
+    "marcado_em": "2020-12-20T17:46:39.380Z"
+  }
+},
+{
+  "model": "dashboard.horamarcada",
+  "pk": 8,
+  "fields": {
+    "data": "2020-12-12T14:45:00Z",
+    "status": 3,
+    "comentario": "",
+    "vacina": "cov19z",
+    "estabelecimento": "124",
+    "paciente": 1,
+    "atendente": null,
+    "marcado_em": "2020-12-20T17:48:27.988Z"
+  }
+},
+{
+  "model": "dashboard.horamarcada",
+  "pk": 9,
+  "fields": {
+    "data": "2020-12-21T17:00:00Z",
+    "status": 1,
+    "comentario": "",
+    "vacina": "cov19z",
+    "estabelecimento": "124",
+    "paciente": 1,
+    "atendente": null,
+    "marcado_em": "2020-12-20T17:54:29.755Z"
+  }
+},
+{
+  "model": "dashboard.vacinaestocada",
+  "pk": 3,
+  "fields": {
+    "data": "2020-12-18T03:00:00Z",
+    "quantidade": 222,
+    "quantidade_atual": null,
+    "vacina": "cov19z",
+    "estabelecimento": "123",
+    "cadastrado_em": "2020-12-19T14:43:24.343Z"
+  }
+},
+{
+  "model": "dashboard.vacinaestocada",
+  "pk": 4,
+  "fields": {
+    "data": "2020-12-14T02:35:00Z",
+    "quantidade": 999,
+    "quantidade_atual": null,
+    "vacina": "cov19pf",
+    "estabelecimento": "123",
+    "cadastrado_em": "2020-12-19T15:35:20.377Z"
+  }
+},
+{
+  "model": "dashboard.vacinaestocada",
+  "pk": 5,
+  "fields": {
+    "data": "2020-12-18T13:03:00Z",
+    "quantidade": 1212,
+    "quantidade_atual": null,
+    "vacina": "cov19z",
+    "estabelecimento": "123",
+    "cadastrado_em": "2020-12-19T15:35:51.591Z"
+  }
+}
+]
