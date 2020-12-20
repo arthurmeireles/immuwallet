@@ -32,6 +32,13 @@
         </div>
         <script>
           const usuario_id = "{{ request.user.id }}";
+          const PERFIL = {
+            PACIENTE: '0',
+            PROFISSIONAL: '1',
+            COORDENADOR: '2',
+          };
+          const usuario_perfil = "{{ request.user.calcular_perfil }}";
+          const usuario_estabelecimento = "{{ request.user.calcular_estabelecimento }}";
         </script>
         {% include 'dashboard/includes/scripts.html' %}
         {% include 'dashboard/smart_selects.html' %}

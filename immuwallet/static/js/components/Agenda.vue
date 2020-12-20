@@ -1,59 +1,60 @@
 <template>
   <div>
     <ul>
-      <p v-if="!horas_marcadas.length">Vazio!</p>
-      <card
+      <p v-if="!items.length">Vazio!</p>
+      <card-horario
         v-else
-        v-for="(hora, i) in horas_marcadas"
+        v-for="(item, i) in items"
         :key="i"
-        :top="hora.vacina.nome"
-        :mid="`${i + 1} - ${hora.paciente.get_full_name}`"
-        :submid="submid(hora)"
-        :bottom1="hora.data"
-        :bottom2="hora.estabelecimento.nome"
-        :color="color(hora)"
-        @click.native="click(hora)"
+        :pk="item.pk"
+        :mid="item.nome"
+        :submid="item.estabelecimento.nome"
+        :color="color(item)"
       />
     </ul>
   </div>
 </template>
 
 <script>
-const HORA_STATUS = {
-  MARCADO: 0,
-  ATENDIMENTO: 1,
-  CANCELADO: 2,
-  CONCLUIDO: 3,
-};
+
 export default {
   data() {
     return {
-      horas_marcadas: [],
+      items: [],
     };
   },
   mounted() {
-    var self = this;
-    EventBus.$on("select_estabelecimento", function () {
-      self.update_horas_marcadas(EventBus.variaveis.estabelecimento);
-    });
+    this.update_items(usuario_estabelecimento);
   },
   methods: {
-    submid(hora) {
-      return {
-        [HORA_STATUS.MARCADO]: "Aguardando",
-        [HORA_STATUS.ATENDIMENTO]: "Em atendimento",
-        [HORA_STATUS.CANCELADO]: "Cancelado",
-        [HORA_STATUS.CONCLUIDO]: "Concluído",
-      }[hora.status];
-    },
-    color(hora) {
+    color(item) {
       var cor = "blue";
-      if (hora.paciente.id == usuario_id) cor = "lightblue";
-      if (hora.status == HORA_STATUS.ATENDIMENTO) cor = "red";
+      // if (item.paciente.id == usuario_id) cor = "lightblue";
+      // if (item.status == HORA_STATUS.ATENDIMENTO) cor = "red";
       return cor;
     },
-    click(hora) {
-      if (hora.status == HORA_STATUS.ATENDIMENTO) {
+    update_items(key) {
+      var params = {
+        key,
+      };
+
+      var url = "/api/horarios_funcionamento/?" + urlencode(params);
+
+      fetch(url)
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          } else {
+            return [];
+          }
+        })
+        .then((data) => {
+          this.items = data;
+        });
+    },
+    click(item) {
+      if (usuario_perfil == PERFIL.PACIENTE) return;
+      if (item.status == HORA_STATUS.ATENDIMENTO) {
         Swal.fire({
           title: "O que deseja fazer?",
           showDenyButton: true,
@@ -63,7 +64,7 @@ export default {
         })
           .then((result) => {
             var data = {
-              id: hora.id,
+              id: item.id,
               status: HORA_STATUS.CONCLUIDO,
             };
             var config = {
@@ -101,7 +102,7 @@ export default {
       })
         .then((result) => {
           var data = {
-            id: hora.id,
+            id: item.id,
             status: HORA_STATUS.ATENDIMENTO,
           };
           var config = {
@@ -127,25 +128,6 @@ export default {
           } else {
             Swal.fire("Houve um problema.", "", "error");
           }
-        });
-    },
-    update_horas_marcadas(estabelecimento) {
-      var params = {
-        estabelecimento,
-      };
-
-      var url = "/api/horas_marcadas/?" + urlencode(params);
-
-      fetch(url)
-        .then((res) => {
-          if (res.ok) {
-            return res.json();
-          } else {
-            return [];
-          }
-        })
-        .then((data) => {
-          this.horas_marcadas = data;
         });
     },
   },

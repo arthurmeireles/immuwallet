@@ -8,9 +8,10 @@ EventBus.variaveis = {};
 window.EventBus = EventBus;
 
 Vue.component('exemplo', require('./components/Exemplo.vue'));
-Vue.component('teste', require('./components/Teste.vue'));
+Vue.component('fila', require('./components/Fila.vue'));
 Vue.component('card', require('./components/Card.vue'));
-
+Vue.component('card-horario', require('./components/CardHorario.vue'));
+Vue.component('agenda', require('./components/Agenda.vue'));
 const app = new Vue({
     el: '#appvue',
 });

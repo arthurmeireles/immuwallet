@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -30,6 +32,15 @@ class Municipio(models.Model):
         return '%s' % self.nome
 
 
+class Vacina(models.Model):
+    codigo = models.CharField(max_length=30, primary_key=True)
+    nome = models.CharField(max_length=60, blank=True)
+    tempo_aplicacao = models.IntegerField(verbose_name="Tempo de aplicação (minutos)", default=15)
+
+    def __str__(self):
+        return f'{self.nome} ({self.codigo})'
+
+
 class Estabelecimento(models.Model):
     cnes = models.CharField(max_length=30, primary_key=True)
     nome = models.CharField(max_length=60, blank=True)
@@ -42,30 +53,65 @@ class Estabelecimento(models.Model):
     def __str__(self):
         return f'({self.cnes}) {self.nome}'
 
+    def horario_atendimento_disponivel(self, data: datetime, vacina: Vacina):
+        achou_horario = False
+        for horario in self.horariofuncionamento_set.filter(data__date=data.date()):
+            data_final = (data + timedelta(minutes=vacina.tempo_aplicacao)).time()
+            if horario.hora_abre <= data.time() and horario.hora_fecha >= data_final:
+                achou_horario = True
+                break
+
+        if not achou_horario:
+            for horario in self.horariofuncionamento_set.filter(dia_semana=data.weekday()):
+                data_final = (data + timedelta(minutes=vacina.tempo_aplicacao)).time()
+                if horario.hora_abre <= data.time() and horario.hora_fecha >= data_final:
+                    achou_horario = True
+                    break
+
+        if not achou_horario:
+            raise Exception('Fora do horário de atendimento.')
+
+        return True
+
 
 class HorarioFuncionamento(models.Model):
     DIAS = [
-        (1, _(u"Segunda")),
-        (2, _(u"Terça")),
-        (3, _(u"Quarta")),
-        (4, _(u"Quinta")),
-        (5, _(u"Sexta")),
-        (6, _(u"Sábado")),
-        (7, _(u"Domingo")),
+        (0, _(u"Segunda")),
+        (1, _(u"Terça")),
+        (2, _(u"Quarta")),
+        (3, _(u"Quinta")),
+        (4, _(u"Sexta")),
+        (5, _(u"Sábado")),
+        (6, _(u"Domingo")),
     ]
 
-    dia_semana = models.IntegerField(choices=DIAS)
+    dia_semana = models.IntegerField(choices=DIAS, null=True)
     hora_abre = models.TimeField()
     hora_fecha = models.TimeField()
     data = models.DateTimeField(null=True)
 
     estabelecimento = models.ForeignKey(Estabelecimento, on_delete=models.CASCADE)
 
-    def __unicode__(self):
-        return f'{self.dia_semana or self.data}'
+    def __str__(self):
+        if self.data:
+            return f"{self.data.date()} das {self.hora_abre} às {self.hora_fecha}"
+        return f"{self.get_dia_semana_display()} das {self.hora_abre} às {self.hora_fecha}"
+
 
 
 class Usuario(AbstractUser):
+
+    @property
+    def calcular_perfil(self):
+        if Perfil.objects.filter(usuario=self).exists():
+            return self.perfil.tipo
+        return Perfil.PACIENTE
+
+    @property
+    def calcular_estabelecimento(self):
+        if Perfil.objects.filter(usuario=self).exists():
+            return None
+        return self.perfil.estabelecimento.pk
 
     @property
     def eh_coordenador(self):
@@ -98,15 +144,6 @@ class Perfil(models.Model):
 
     def __unicode__(self):
         return f'{self.usuario.get_full_name()} ({self.tipo})'
-
-
-class Vacina(models.Model):
-    codigo = models.CharField(max_length=30, primary_key=True)
-    nome = models.CharField(max_length=60, blank=True)
-    tempo_aplicacao = models.IntegerField(verbose_name="Tempo de aplicação (minutos)", default=15)
-
-    def __str__(self):
-        return f'{self.nome} ({self.codigo})'
 
 
 class HoraMarcada(models.Model):

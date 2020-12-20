@@ -7,7 +7,7 @@ from crispy_forms.layout import Div, Field, Layout, Submit
 from django import forms
 from localflavor.br.forms import BRCPFField
 
-from dashboard.models import Usuario, Perfil, Estabelecimento, Vacina, VacinaEstocada, HoraMarcada
+from dashboard.models import Usuario, Perfil, Estabelecimento, Vacina, VacinaEstocada, HoraMarcada, HorarioFuncionamento
 
 
 class BRCPFFieldUnique(BRCPFField):
@@ -338,8 +338,13 @@ class HoraMarcadaForm(forms.Form):
         )
 
     def clean_data(self):
-        # if Usuario.objects.filter(email=self.cleaned_data['email']).exists():
-        #     raise forms.ValidationError('Email já existe!')
+        try:
+            estabelecimento = self.cleaned_data['estabelecimento']
+            data = self.cleaned_data['data']
+            vacina = self.cleaned_data['vacina']
+            estabelecimento.horario_atendimento_disponivel(data, vacina)
+        except Exception as e:
+            raise forms.ValidationError(e)
         return self.cleaned_data['data']
 
     def save(self):
@@ -350,3 +355,87 @@ class HoraMarcadaForm(forms.Form):
         hora_marcada.save()
 
         hora_marcada.save()
+
+
+class HorarioFuncionamentoForm(forms.Form):
+    dia_semana = forms.ChoiceField(
+        required=False,
+        widget=forms.Select(),
+        choices=HorarioFuncionamento.DIAS
+    )
+    hora_abre = forms.TimeField(required=True)
+    hora_fecha = forms.TimeField(required=True)
+    data = forms.DateField(required=False)
+    estabelecimento = forms.ModelChoiceField(
+        required=True,
+        queryset=Estabelecimento.objects.all(),
+        widget=forms.Select(),
+        empty_label='Selecionar',
+    )
+
+    def __init__(self, *args, **kwargs):
+        if 'usuario' in kwargs.keys():
+            self.usuario = kwargs.pop("usuario")
+        self.instance = kwargs.pop("instance", None)
+
+        super(HorarioFuncionamentoForm, self).__init__(*args, **kwargs)
+
+        if self.usuario and Perfil.objects.filter(usuario=self.usuario).exists():
+            self.fields['estabelecimento'].initial = self.usuario.perfil.estabelecimento
+        if self.instance:
+            self.fields['dia_semana'].initial = self.instance.dia_semana
+            self.fields['hora_abre'].initial = self.instance.hora_abre
+            self.fields['hora_fecha'].initial = self.instance.hora_fecha
+            self.fields['data'].initial = self.instance.data
+            self.fields['estabelecimento'].initial = self.instance.estabelecimento
+
+        self.helper = FormHelper()
+        self.helper.form_method = 'POST'
+        self.helper.form_class = 'form-horizontal'
+
+        self.helper.layout = Layout(
+            Div(
+                Div(
+                    Field('dia_semana', css_class="form-control"),
+                    css_class="col-md-4 col-lg-4 col-xs-12"
+                ),
+                Div(
+                    Field('hora_abre', css_class="form-control"),
+                    css_class="col-md-4 col-lg-4 col-xs-12"
+                ),
+                Div(
+                    Field('hora_fecha', css_class="form-control"),
+                    css_class="col-md-4 col-lg-4 col-xs-12"
+                ),
+                css_class="row"
+            ),
+            Div(
+                Div(
+                    Field('data', css_class="form-control"),
+                    css_class="col-md-6 col-lg-6 col-xs-12"
+                ),
+                Div(
+                    Field('estabelecimento', css_class="form-control"),
+                    css_class="col-md-6 col-lg-6 col-xs-12"
+                ),
+                css_class="row"
+            ),
+            FormActions(Submit('submit', 'Salvar', css_class='pull-right')),
+        )
+
+    def clean(self):
+        if self.cleaned_data['data'] is not None:
+            self.cleaned_data['dia_semana'] = None
+        return self.cleaned_data
+
+    def save(self):
+        if self.instance:
+            horario_funcionamento = self.instance
+        else:
+            horario_funcionamento = HorarioFuncionamento()
+
+        for chave, valor in self.cleaned_data.items():
+            setattr(horario_funcionamento, chave, valor)
+        horario_funcionamento.save()
+
+        return horario_funcionamento

@@ -16,19 +16,27 @@
                 </li>
                 <li>
                     <a href="{% url 'dashboard:agendar' %}" style="color: #424242;">
-                        <i class="fa fa-home aux-menu"></i> Agendar atendimento</a>
+                        <i class="fa fa-clock-o aux-menu"></i> Agendar atendimento</a>
                 </li>
-                {% if request.user.eh_coordenador %}
-                    <li>
-                        <a href="{% url 'dashboard:gerenciar_usuarios' %}" style="color: #424242;">
-                            <i class="fa fa-gear aux-menu"></i>Gerenciar usuários</a>
-                    </li>
+                {% if not request.user.eh_paciente %}
+                <li>
+                    <a><i class="fa fa-calendar aux-menu"></i>Agenda do estabelecimento <span class="glyphicon glyphicon-chevron-down"></span></a>
+                    <ul class="nav child_menu" style="display: none" >
+                        <li><a href="{% url 'dashboard:cadastrar_horario' %}">Cadastrar</a></li>
+                        <li><a href="{% url 'dashboard:gerenciar_horarios' %}">Gerenciar</a></li>
+                    </ul>
+                </li>
                 {% endif %}
-
                 {% if not request.user.eh_paciente %}
                     <li>
                         <a href="{% url 'dashboard:cadastrar_vacina_estocada' %}" style="color: #424242;">
                             <i class="fa fa-database aux-menu"></i>Cadastrar estoque</a>
+                    </li>
+                {% endif %}
+                {% if request.user.eh_coordenador %}
+                    <li>
+                        <a href="{% url 'dashboard:gerenciar_usuarios' %}" style="color: #424242;">
+                            <i class="fa fa-users aux-menu"></i>Gerenciar usuários</a>
                     </li>
                 {% endif %}
             </ul>

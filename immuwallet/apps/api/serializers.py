@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from dashboard.models import HoraMarcada, Usuario, Estabelecimento, Vacina
+from dashboard.models import HoraMarcada, Usuario, Estabelecimento, Vacina, HorarioFuncionamento
 
 
 class EstabelecimentoSerializer(serializers.ModelSerializer):
@@ -29,3 +29,16 @@ class HoraMarcadaSerializer(serializers.ModelSerializer):
     class Meta:
         model = HoraMarcada
         fields = '__all__'
+
+
+class HorarioFuncionamentoSerializer(serializers.ModelSerializer):
+    estabelecimento = EstabelecimentoSerializer()
+    nome = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_nome(obj):
+        return str(obj)
+
+    class Meta:
+        model = HorarioFuncionamento
+        fields = ['pk', 'estabelecimento', 'nome']

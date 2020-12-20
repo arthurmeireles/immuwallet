@@ -16,8 +16,8 @@ from django.views import View
 from django.views.generic.base import TemplateView
 
 from dashboard.forms import Login, PesquisaUsuarioForm, UsuarioForm, CadastrarUsuarioForm, VacinaEstocadaForm, \
-    HoraMarcadaForm
-from dashboard.models import Estabelecimento, Usuario
+    HoraMarcadaForm, HorarioFuncionamentoForm
+from dashboard.models import Estabelecimento, Usuario, HorarioFuncionamento
 
 
 def login_page(request):
@@ -230,6 +230,31 @@ def cadastrar_vacina_estocada_view(request):
         form.save()
         return redirect(resolve_url('dashboard:sucesso'))
     return render(request, 'dashboard/cadastro_vacina_estocada.html', locals())
+
+
+@login_required
+def cadastrar_horario_view(request):
+    form = HorarioFuncionamentoForm(request.POST or None, usuario=request.user)
+
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return redirect(resolve_url('dashboard:sucesso'))
+    return render(request, 'dashboard/cadastro_horario_funcionamento.html', locals())
+
+
+@login_required
+def editar_horario_view(request, id):
+    horario = get_object_or_404(HorarioFuncionamento, id=id)
+    form = HorarioFuncionamentoForm(request.POST or None, instance=horario, usuario=request.user)
+
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return redirect(resolve_url('dashboard:sucesso'))
+    return render(request, 'dashboard/cadastro_horario_funcionamento.html', locals())
+
+
+class GerenciarHorariosView(LoginRequiredMixin, TemplateView):
+    template_name = 'dashboard/gerenciar_horarios_funcionamento.html'
 
 
 class SucessoView(LoginRequiredMixin, TemplateView):
