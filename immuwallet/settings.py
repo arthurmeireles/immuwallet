@@ -11,9 +11,10 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-import sys
 import random
+import sys
 
+import django_heroku
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
@@ -29,10 +30,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'asfzc@xwrhwi2tnfn!c#i_^na6^nqs^!9q-9x$4%%#padmncsu'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'asfzc@xwrhwi2tnfn!c#i_^na6^nqs^!9q-9x$4%%#padmncsu')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
+DEBUG = os.environ.get('DEBUG', True)
 
 ALLOWED_HOSTS = [
     '*'
@@ -262,7 +263,9 @@ if os.environ.get('SENTRY', '') == 'True':
         dsn="https://b6134bc81848461188b9c4b0176061c4@o407737.ingest.sentry.io/5277325",
         integrations=[DjangoIntegration()],
 
-    # If you wish to associate users to errors (assuming you are using
-    # django.contrib.auth) you may enable sending PII data.
-    send_default_pii=True
-)
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True
+    )
+
+django_heroku.settings(locals())
