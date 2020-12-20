@@ -11,7 +11,7 @@
             <ul class="nav navbar-nav navbar-right">
             <li class="dropdown dropdown-custom">
                 <a href="#" class="dropdown-toggle hover-pai-blue" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                    <div class="hover-filho-blue">{{request.user.username}}<br>
+                    <div class="hover-filho-blue">{{request.user.get_full_name}}<br>
                     <p>{{request.user.perfil.get_tipo_display}}
                         <span class="glyphicon glyphicon-chevron-down hover-filho-blue" style="margin-left: 10px;"></span>
                     </p>

@@ -10,6 +10,7 @@ django-localflavor
 django-crispy-forms
 channels
 channels-redis
+redis
 whitenoise
 drf_yasg
 django-prettyjson

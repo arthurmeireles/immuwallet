@@ -17,7 +17,7 @@ from django.views.generic.base import TemplateView
 
 from dashboard.forms import Login, PesquisaUsuarioForm, UsuarioForm, CadastrarUsuarioForm, VacinaEstocadaForm, \
     HoraMarcadaForm
-from dashboard.models import Usuario
+from dashboard.models import Estabelecimento, Usuario
 
 
 def login_page(request):
@@ -75,6 +75,11 @@ class LPIndexView(TemplateView):
 
 class IndexView(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        context['estabelecimentos'] = Estabelecimento.objects.all()
+        return context
 
 
 class Encoder(DjangoJSONEncoder):

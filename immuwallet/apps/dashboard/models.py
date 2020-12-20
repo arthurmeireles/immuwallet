@@ -73,7 +73,7 @@ class Usuario(AbstractUser):
 
     @property
     def eh_paciente(self):
-        return Perfil.objects.filter(usuario=self, tipo=Perfil.PACIENTE).exists()
+        return not Perfil.objects.filter(usuario=self, tipo__in=(Perfil.PROFISSIONAL, Perfil.COORDENADOR)).exists()
 
 
 class Perfil(models.Model):
@@ -111,12 +111,14 @@ class Vacina(models.Model):
 
 class HoraMarcada(models.Model):
     MARCADO = 0
-    CONCLUIDO = 1
+    ATENDIMENTO = 1
     CANCELADO = 2
+    CONCLUIDO = 3
     status_choices = (
         (MARCADO, u'Marcado'),
-        (CONCLUIDO, u'Concluído'),
+        (ATENDIMENTO, u'Em atendimento'),
         (CANCELADO, u'Cancelado'),
+        (CONCLUIDO, u'Concluído'),
     )
     data = models.DateTimeField()
     status = models.IntegerField(choices=status_choices)
@@ -127,6 +129,9 @@ class HoraMarcada(models.Model):
     atendente = models.ForeignKey(Usuario, related_name='horas_atendente', null=True, on_delete=models.CASCADE)
 
     marcado_em = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['data']
 
     def __unicode__(self):
         return f'{self.data} {self.vacina}'

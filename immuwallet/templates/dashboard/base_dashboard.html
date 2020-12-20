@@ -23,13 +23,16 @@
                 {% include 'dashboard/includes/top_nav.html' %}
 
                 <div class="right_col" role="main">
-                  <div class="row content_pmaq">
+                  <div class="row content_pmaq" id="appvue">
                     {% block content %}{% endblock %}
                   </div>
                 </div><!-- /right_col -->
                 {% include 'dashboard/footer.html' %}
             </div>
         </div>
+        <script>
+          const usuario_id = "{{ request.user.id }}";
+        </script>
         {% include 'dashboard/includes/scripts.html' %}
         {% include 'dashboard/smart_selects.html' %}
         {% block script %}{% endblock %}

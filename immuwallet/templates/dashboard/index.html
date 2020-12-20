@@ -6,17 +6,58 @@
 {% block content %}
   <div class="row">
     <div class="col-md-12">
-      <h1>Immu<strong>wallet</strong> <small>Brasil</small></h1>
+      <h1>Immu<strong>wallet</strong>
+        <small>Brasil</small>
+      </h1>
+      <hr>
+    </div>
+    <div class="col-md-12">
+      <h3>Fila de atendimento
+      </h3>
       <hr>
     </div>
     <div class="row">
-      {% include 'dashboard/cards-dashboard.html' %}
+      <div class="col-md-4 col-lg-6 col-xs-12">
+        <div class="control-group">
+          <label for="id_estabelecimento" class="control-label requiredField">
+            Estabelecimento
+          </label>
+          <div class="controls">
+            <select name="estabelecimento" class="form-control select" id="id_estabelecimento"
+              onchange="select_estabelecimento(this.value)"
+              >
+              {% for estabelecimento in estabelecimentos %}
+                <option value="{{ estabelecimento.pk }}">
+                  {{ estabelecimento }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
     </div>
-    
-  </div><!-- /row -->
+
+    <div class="row">
+      <teste/>
+    </div>
+
+    <div class="row"></div>
+
+  </div>
+  <!-- /row -->
 {% endblock %}
 
 {% block script %}
+  <script>
 
+    EventBus.variaveis.estabelecimento = "{{ estabelecimentos.0.pk }}";
+    EventBus.$emit('select_estabelecimento');
 
+    function select_estabelecimento(value) {
+      EventBus.variaveis.estabelecimento = value;
+      EventBus.$emit('select_estabelecimento');
+    }
+  </script>
+
+  <script type="text/javascript" src="{% static 'js/ws_fila.js' %}"></script>
 {% endblock %}

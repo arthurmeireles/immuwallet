@@ -42,6 +42,7 @@ ALLOWED_HOSTS = [
 
 LOCAL_APPS = [
     'dashboard',
+    'api'
 ]
 
 DEFAULT_APPS = [
