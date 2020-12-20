@@ -1,7 +1,8 @@
 import datetime
 import json
 import re
-
+import csv
+from dashboard.sql_bloc import SqlBloc
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -258,9 +259,21 @@ def relatorio_view(request):
     form = RelatorioForm(request.POST or None)
 
     if request.method == 'POST' and form.is_valid():
-        form.save()
-        return redirect(resolve_url('dashboard:sucesso'))
-    return render(request, 'dashboard/cadastro_horario_funcionamento.html', locals())
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="relatorio.csv"'
+
+        estabelecimento = form.cleaned_data['estabelecimento']
+        vacina = form.cleaned_data['vacina']
+
+        dados = SqlBloc.relatorio_vacinas_aplicadas_dia(estabelecimento, vacina)
+        cabecalho = dados[0].keys()
+
+        writer = csv.DictWriter(response, fieldnames=cabecalho)
+        writer.writeheader()
+        writer.writerows(dados)
+
+        return response
+    return render(request, 'dashboard/relatorio.html', locals())
 
 
 @login_required

@@ -463,13 +463,13 @@ class EstabelecimentoForm(forms.Form):
 
 class RelatorioForm(forms.Form):
     vacina = forms.ModelChoiceField(
-        required=True,
+        required=False,
         queryset=Vacina.objects.all(),
         widget=forms.Select(),
         empty_label='Selecionar',
     )
     estabelecimento = forms.ModelChoiceField(
-        required=True,
+        required=False,
         queryset=Estabelecimento.objects.all(),
         widget=forms.Select(),
         empty_label='Selecionar',
