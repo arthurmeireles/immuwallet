@@ -105,7 +105,7 @@ standardjson==0.3.1
 terminado==0.9.1
 testpath==0.4.4
 tornado==6.1
-traitlets==5.0.5
+traitlets==4.3.3
 Twisted==20.3.0
 txaio==20.4.1
 uritemplate==3.0.1
