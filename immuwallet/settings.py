@@ -61,7 +61,8 @@ DEFAULT_APPS = [
     'django_extensions',
     'django_celery_beat',
     'prettyjson',
-    'crispy_forms'
+    'crispy_forms',
+    'localflavor'
 ]
 
 INSTALLED_APPS = DEFAULT_APPS + LOCAL_APPS
