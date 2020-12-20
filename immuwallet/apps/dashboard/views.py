@@ -16,7 +16,7 @@ from django.views import View
 from django.views.generic.base import TemplateView
 
 from dashboard.forms import Login, PesquisaUsuarioForm, UsuarioForm, CadastrarUsuarioForm, VacinaEstocadaForm, \
-    HoraMarcadaForm, HorarioFuncionamentoForm
+    HoraMarcadaForm, HorarioFuncionamentoForm, RelatorioForm, EstabelecimentoForm
 from dashboard.models import Estabelecimento, Usuario, HorarioFuncionamento
 
 
@@ -251,6 +251,26 @@ def editar_horario_view(request, id):
         form.save()
         return redirect(resolve_url('dashboard:sucesso'))
     return render(request, 'dashboard/cadastro_horario_funcionamento.html', locals())
+
+
+@login_required
+def relatorio_view(request):
+    form = RelatorioForm(request.POST or None)
+
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return redirect(resolve_url('dashboard:sucesso'))
+    return render(request, 'dashboard/cadastro_horario_funcionamento.html', locals())
+
+
+@login_required
+def cadastrar_estabelecimentos_view(request):
+    form = EstabelecimentoForm(request.POST or None, request.FILES or None)
+
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return redirect(resolve_url('dashboard:sucesso'))
+    return render(request, 'dashboard/cadastrar_estabelecimentos.html', locals())
 
 
 class GerenciarHorariosView(LoginRequiredMixin, TemplateView):

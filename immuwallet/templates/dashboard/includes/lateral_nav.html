@@ -39,6 +39,18 @@
                             <i class="fa fa-users aux-menu"></i>Gerenciar usuários</a>
                     </li>
                 {% endif %}
+                {% if request.user.eh_coordenador %}
+                    <li>
+                        <a href="{% url 'dashboard:cadastrar_estabelecimentos' %}" style="color: #424242;">
+                            <i class="fa fa-building aux-menu"></i>Cadastrar estabelecimentos</a>
+                    </li>
+                {% endif %}
+                {% if request.user.eh_coordenador %}
+                    <li>
+                        <a href="{% url 'dashboard:relatorio' %}" style="color: #424242;">
+                            <i class="fa fa-book aux-menu"></i>Relatório</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </div>

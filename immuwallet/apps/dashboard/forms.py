@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 
+import csv
+
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Div, Field, Layout, Submit
 from django import forms
+from django.db import transaction
 
-from dashboard.models import Usuario, Perfil, Estabelecimento, Vacina, VacinaEstocada, HoraMarcada, HorarioFuncionamento
+from dashboard.models import Municipio, Usuario, Perfil, Estabelecimento, Vacina, VacinaEstocada, HoraMarcada, \
+    HorarioFuncionamento
 
 
 class Login(forms.Form):
@@ -414,3 +418,81 @@ class HorarioFuncionamentoForm(forms.Form):
         horario_funcionamento.save()
 
         return horario_funcionamento
+
+
+class EstabelecimentoForm(forms.Form):
+    arquivo = forms.FileField(required=True, label='Arquivo')
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super(EstabelecimentoForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_method = 'POST'
+        self.helper.form_class = 'form-horizontal'
+
+        self.helper.layout = Layout(
+            Div(
+                Div(
+                    Field('arquivo', css_class="form-control"),
+                    css_class="col-md-12 col-lg-12 col-xs-12"
+                ),
+                css_class="row",
+            ),
+            FormActions(Submit('submit', 'Salvar', css_class='pull-right')),
+        )
+
+    def save(self):
+        try:
+            string = self.cleaned_data['arquivo'].read().decode('utf8').splitlines()
+            reader = csv.DictReader(string)
+            with transaction.atomic():
+                municipio = Municipio.objects.first()
+                for linha in reader:
+                    Estabelecimento.objects.update_or_create(
+                        cnes=linha['CO_CNES'],
+                        defaults={
+                            'nome': linha['NO_RAZAO_SOCIAL'],
+                            'municipio': municipio
+                        }
+                    )
+        except Exception as error:
+            print('erro arquivo', error)
+            raise forms.ValidationError(u'Arquivo inválido.')
+
+
+class RelatorioForm(forms.Form):
+    vacina = forms.ModelChoiceField(
+        required=True,
+        queryset=Vacina.objects.all(),
+        widget=forms.Select(),
+        empty_label='Selecionar',
+    )
+    estabelecimento = forms.ModelChoiceField(
+        required=True,
+        queryset=Estabelecimento.objects.all(),
+        widget=forms.Select(),
+        empty_label='Selecionar',
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(RelatorioForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_method = 'POST'
+        self.helper.form_class = 'form-horizontal'
+
+        self.helper.layout = Layout(
+            Div(
+                Div(
+                    Field('vacina', css_class="form-control"),
+                    css_class="col-md-4 col-lg-4 col-xs-12"
+                ),
+                Div(
+                    Field('estabelecimento', css_class="form-control"),
+                    css_class="col-md-4 col-lg-4 col-xs-12"
+                ),
+                css_class="row"
+            ),
+            FormActions(Submit('submit', 'Download', css_class='pull-right')),
+        )
