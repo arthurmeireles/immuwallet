@@ -1,36 +1,11 @@
 # -*- coding: utf-8 -*-
-import re
 
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Div, Field, Layout, Submit
 from django import forms
-from localflavor.br.forms import BRCPFField
 
 from dashboard.models import Usuario, Perfil, Estabelecimento, Vacina, VacinaEstocada, HoraMarcada, HorarioFuncionamento
-
-
-class BRCPFFieldUnique(BRCPFField):
-    """
-    Extende a classe BRCPFField para forçar valores
-    únicos para o CPF e também para sempre salvar apenas
-    os números na base de dados sem pontos e hífem.
-    Usado no UserRegistrationForm que não extende o ModelForm
-    e por isso ignora o fato do campo cpf estar marcado como único.
-    """
-
-    def __init__(self, *args, **kwargs):
-        super(BRCPFFieldUnique, self).__init__(*args, **kwargs)
-
-    def clean(self, value):
-        value = re.sub("[-.]", "", value)
-
-        if value == '00000000000':
-            return value
-
-        super(BRCPFFieldUnique, self).clean(value)
-
-        return value
 
 
 class Login(forms.Form):
