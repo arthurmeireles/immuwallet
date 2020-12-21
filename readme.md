@@ -7,4 +7,4 @@
 1. Carregar fixtures com `python manage.py loaddata start`
 1. Rodar o servidor com `python manage.py runserver`
 
-Essa aplicação também está rodando no [Heroku](immuwallet.herokuapp.com).
+Essa aplicação também está rodando no [Heroku](https://immuwallet.herokuapp.com/).

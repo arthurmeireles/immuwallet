@@ -1,4 +1,4 @@
-Django==3.0.4
+Django
 django-celery-beat
 django-extensions
 jupyter
@@ -17,3 +17,4 @@ django-prettyjson
 celery
 django_heroku
 django-allauth
+docker-compose

@@ -74,7 +74,6 @@ DEFAULT_APPS = [
 
 SITE_ID = os.environ.get('SITE_ID', '2')  # https://stackoverflow.com/a/35389220/6728529
 
-
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': ['profile', 'email'],
@@ -126,9 +125,11 @@ try:
     REDIS_USER = REDIS_URL.split(':')[1].replace('//', '')
     REDIS_PASSWORD = REDIS_URL.split(':')[2].split('@')[0]
     REDIS_HOST = REDIS_URL.split(':')[2].split('@')[1]
+    REDIS_HOST = REDIS_HOST if not os.environ.get('REDIS_HOST', None) else os.environ.get('REDIS_HOST', None)
     REDIS_PORT = REDIS_URL.split(':')[3]
 except:
     REDIS_HOST = "localhost"
+    REDIS_HOST = REDIS_HOST if not os.environ.get('REDIS_HOST', None) else os.environ.get('REDIS_HOST', None)
     REDIS_PASSWORD = None
     REDIS_USER = None
     REDIS_PORT = 6379
@@ -169,13 +170,15 @@ except ConnectionRefusedError:
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+DATABASE_HOST = os.environ.get('DATABASE_HOST', 'localhost')
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'immuwallet',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': 'localhost',
+        'HOST': DATABASE_HOST,
         'PORT': '5432',
     }
 }
