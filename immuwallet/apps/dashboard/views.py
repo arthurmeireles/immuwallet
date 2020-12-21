@@ -1,8 +1,8 @@
+import csv
 import datetime
 import json
 import re
-import csv
-from dashboard.sql_bloc import SqlBloc
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -17,8 +17,9 @@ from django.views import View
 from django.views.generic.base import TemplateView
 
 from dashboard.forms import Login, PesquisaUsuarioForm, UsuarioForm, CadastrarUsuarioForm, VacinaEstocadaForm, \
-    HoraMarcadaForm, HorarioFuncionamentoForm, RelatorioForm, EstabelecimentoForm
+    HoraMarcadaForm, HorarioFuncionamentoForm, RelatorioForm, EstabelecimentoForm, VacinaAplicadaForm
 from dashboard.models import Estabelecimento, Usuario, HorarioFuncionamento
+from dashboard.sql_bloc import SqlBloc
 
 
 def login_page(request):
@@ -81,6 +82,20 @@ class IndexView(LoginRequiredMixin, TemplateView):
         context = super(IndexView, self).get_context_data(**kwargs)
         context['estabelecimentos'] = Estabelecimento.objects.all()
         return context
+
+
+class CartaoVacinasView(TemplateView):
+    template_name = 'dashboard/cartao_vacinas.html'
+
+
+@login_required
+def cadastrar_vacina_aplicada_view(request):
+    form = VacinaAplicadaForm(request.POST or None, usuario=request.user)
+
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return redirect(resolve_url('dashboard:sucesso'))
+    return render(request, 'dashboard/cadastrar_vacina_aplicada.html', locals())
 
 
 class Encoder(DjangoJSONEncoder):

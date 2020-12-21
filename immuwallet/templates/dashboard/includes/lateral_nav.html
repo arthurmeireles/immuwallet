@@ -18,6 +18,13 @@
                     <a href="{% url 'dashboard:agendar' %}" style="color: #424242;">
                         <i class="fa fa-clock-o aux-menu"></i> Agendar atendimento</a>
                 </li>
+                <li>
+                    <a><i class="fa fa-ioxhost aux-menu"></i>Cartão de Vacinas <span class="glyphicon glyphicon-chevron-down"></span></a>
+                    <ul class="nav child_menu" style="display: none" >
+                        <li><a href="{% url 'dashboard:cadastrar_vacina_aplicada' %}">Cadastrar</a></li>
+                        <li><a href="{% url 'dashboard:cartao_vacinas' %}">Ver</a></li>
+                    </ul>
+                </li>
                 {% if not request.user.eh_paciente %}
                 <li>
                     <a><i class="fa fa-calendar aux-menu"></i>Agenda do estabelecimento <span class="glyphicon glyphicon-chevron-down"></span></a>

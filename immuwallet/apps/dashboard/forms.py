@@ -8,7 +8,7 @@ from crispy_forms.layout import Div, Field, Layout, Submit
 from django import forms
 from django.db import transaction
 
-from dashboard.models import Municipio, Usuario, Perfil, Estabelecimento, Vacina, VacinaEstocada, HoraMarcada, \
+from dashboard.models import Municipio, Usuario, Perfil, Estabelecimento, Vacina, VacinaEstocada, VacinaAplicada, HoraMarcada, \
     HorarioFuncionamento
 
 
@@ -267,6 +267,46 @@ class VacinaEstocadaForm(forms.Form):
 
     def save(self):
         vacina = VacinaEstocada(**self.cleaned_data)
+        vacina.save()
+
+        return vacina
+
+
+class VacinaAplicadaForm(forms.Form):
+    vacina = forms.ModelChoiceField(
+        required=True,
+        queryset=Vacina.objects.all(),
+        widget=forms.Select(),
+        empty_label='Selecionar',
+    )
+    data = forms.DateField(required=True)
+
+    def __init__(self, *args, **kwargs):
+        self.usuario = kwargs.pop("usuario")
+
+        super(VacinaAplicadaForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_method = 'POST'
+        self.helper.form_class = 'form-horizontal'
+
+        self.helper.layout = Layout(
+            Div(
+                Div(
+                    Field('vacina', css_class="form-control"),
+                    css_class="col-md-4 col-lg-6 col-xs-12"
+                ),
+                Div(
+                    Field('data', css_class="form-control"),
+                    css_class="col-md-4 col-lg-6 col-xs-12"
+                ),
+                css_class="row"
+            ),
+            FormActions(Submit('submit', 'Salvar', css_class='pull-right')),
+        )
+
+    def save(self):
+        vacina = VacinaAplicada(paciente=self.usuario, **self.cleaned_data)
         vacina.save()
 
         return vacina

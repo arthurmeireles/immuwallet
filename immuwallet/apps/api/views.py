@@ -5,8 +5,8 @@ from rest_framework.exceptions import APIException
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api.serializers import HoraMarcadaSerializer, HorarioFuncionamentoSerializer
-from dashboard.models import HoraMarcada, HorarioFuncionamento
+from api.serializers import HoraMarcadaSerializer, HorarioFuncionamentoSerializer, VacinaAplicadaSerializer
+from dashboard.models import HoraMarcada, HorarioFuncionamento, Usuario, VacinaAplicada
 
 
 class HoraMarcadaApiView(generics.ListAPIView):
@@ -57,3 +57,17 @@ class HorariosFuncionamentoApiView(APIView):
             raise APIException("Informe o parâmetro 'pk'!")
         get_object_or_404(HorarioFuncionamento, pk=pk).delete()
         return Response([], status=status.HTTP_202_ACCEPTED)
+
+
+class VacinasUsuarioApiView(APIView):
+
+    @staticmethod
+    def get(request, *args, **kwargs):
+        usuario_pk = kwargs.get('pk')
+        usuario = get_object_or_404(Usuario, pk=usuario_pk)
+
+        objetos = VacinaAplicada.objects.filter(paciente=usuario)
+
+        serializer = VacinaAplicadaSerializer(objetos, many=True)
+
+        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
