@@ -1,4 +1,5 @@
 {% load static %}
+{% load socialaccount %}
 <!DOCTYPE html>
 
 <head>
@@ -66,10 +67,14 @@
         <div class="sign-footer">
             <div class="form-group">
                 <div class="row">
-                    <div class="col-xs-6 text-left">
+                    <div class="col-xs-4 text-left">
                         <a href="{% url 'dashboard:cadastrar_usuario' %}" title="Clique aqui para se cadastrar">Cadastre-se</a>
                     </div>
-                    <div class="col-xs-6 text-right">
+
+                    <div class="col-xs-4 text-left">
+                        <a href="{% provider_login_url 'google' %}">Login with Google</a>
+                    </div>
+                    <div class="col-xs-4 text-right">
                         <a href="" title="Se esqueceu a senha clique aqui">Esqueceu a
                             senha?</a>
                     </div>

@@ -34,7 +34,6 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'asfzc@xwrhwi2tnfn!c#i_^na6^nqs^!9q-9x
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', '1') == '1'
-DEBUG = False
 
 ALLOWED_HOSTS = [
     '*'
@@ -63,8 +62,24 @@ DEFAULT_APPS = [
     'django_celery_beat',
     'prettyjson',
     'crispy_forms',
-    'localflavor'
+    'localflavor',
+    'allauth',
+    'django.contrib.sites',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.twitter',
 ]
+
+SITE_ID = os.environ.get('SITE_ID', '2')  # https://stackoverflow.com/a/35389220/6728529
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {'access_type': 'online'}
+    }
+}
 
 INSTALLED_APPS = DEFAULT_APPS + LOCAL_APPS
 
@@ -217,6 +232,7 @@ SWAGGER_SETTINGS = {
 }
 
 LOGIN_URL = 'dashboard:login'
+LOGIN_REDIRECT_URL = '/dashboard'
 LOGOUT_URL = 'dashboard:logout'
 
 # Internationalization

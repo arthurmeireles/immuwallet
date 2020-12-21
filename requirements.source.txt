@@ -16,3 +16,4 @@ drf_yasg
 django-prettyjson
 celery
 django_heroku
+django-allauth
