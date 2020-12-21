@@ -74,6 +74,7 @@ DEFAULT_APPS = [
 
 SITE_ID = os.environ.get('SITE_ID', '2')  # https://stackoverflow.com/a/35389220/6728529
 
+
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': ['profile', 'email'],
