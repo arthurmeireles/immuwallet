@@ -1,6 +1,6 @@
 ## Instruções
 
-1. Clonar o repositório com `git clone `
+1. Clonar o repositório com `git clone https://github.com/diego-lima/immuwallet.git`
 1. Instalar dependências com  `pip install -r requirements.txt`
 1. Ter uma instância do redis rodando localmente (jeito mais fácil: `docker run -p 6379:6379 -d redis:5`)
 1. Rodar as migrações com `python manage.py migrate`
