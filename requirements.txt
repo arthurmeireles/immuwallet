@@ -29,6 +29,7 @@ decorator==4.4.2
 defusedxml==0.6.0
 dj-database-url==0.5.0
 Django==3.0.4
+django-allauth==0.44.0
 django-celery-beat==2.1.0
 django-crispy-forms==1.10.0
 django-extensions==3.1.0
@@ -67,6 +68,7 @@ nbconvert==6.0.7
 nbformat==5.0.8
 nest-asyncio==1.4.3
 notebook==6.1.5
+oauthlib==3.1.0
 packaging==20.8
 pandocfilters==1.4.3
 parso==0.7.1
@@ -82,18 +84,21 @@ pyasn1-modules==0.2.8
 pycparser==2.20
 Pygments==2.7.3
 PyHamcrest==2.0.2
+PyJWT==1.7.1
 pyOpenSSL==20.0.1
 pyparsing==2.4.7
 pyrsistent==0.17.3
 python-crontab==2.5.1
 python-dateutil==2.8.1
 python-stdnum==1.14
+python3-openid==3.2.0
 pytz==2020.4
 pyzmq==20.0.0
 qtconsole==5.0.1
 QtPy==1.9.0
 redis==3.5.3
 requests==2.25.1
+requests-oauthlib==1.3.0
 ruamel.yaml==0.16.12
 ruamel.yaml.clib==0.2.2
 Send2Trash==1.5.0
