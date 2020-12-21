@@ -1,0 +1,39 @@
+[
+{
+  "model": "socialaccount.socialapp",
+  "pk": 1,
+  "fields": {
+    "provider": "google",
+    "name": "google",
+    "client_id": "820363194510-jpdgri5oe8tdgn0cvh117if57f9g8kus.apps.googleusercontent.com",
+    "secret": "8FTAz6R0vieU-kTVTzyOx_en",
+    "key": "",
+    "sites": [
+      2
+    ]
+  }
+},
+{
+  "model": "socialaccount.socialaccount",
+  "pk": 1,
+  "fields": {
+    "user": 6,
+    "provider": "google",
+    "uid": "102287697746837609143",
+    "last_login": "2020-12-20T23:41:31.405Z",
+    "date_joined": "2020-12-20T23:37:52.227Z",
+    "extra_data": "{\"id\": \"102287697746837609143\", \"email\": \"ddddiegolima@gmail.com\", \"verified_email\": true, \"name\": \"Diego Lima\", \"given_name\": \"Diego\", \"family_name\": \"Lima\", \"picture\": \"https://lh3.googleusercontent.com/a-/AOh14GgoblSrBpDWVKEpUWJ72yl5g5xOo_18YsUCWtkykw=s96-c\", \"locale\": \"en\"}"
+  }
+},
+{
+  "model": "socialaccount.socialtoken",
+  "pk": 1,
+  "fields": {
+    "app": 1,
+    "account": 1,
+    "token": "ya29.a0AfH6SMAULCPqmbPCJeV6iYQRxjOn0wVZtJwjqzv9sy29tQObFNVLzLg7Nnw9Hx_o1zdxSW2xm-YDVIVrZAOk8WmPZUltd5It20j6APf_kRJLWaO8itLKDpbCaWARyBy3-v3B4UFJ88bmMMvZUeVdMZKZD2Lc0zYtAfzKVDa2V4M",
+    "token_secret": "",
+    "expires_at": "2020-12-21T00:41:30.052Z"
+  }
+}
+]
