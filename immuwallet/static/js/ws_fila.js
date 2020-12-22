@@ -26,6 +26,7 @@ class FilaWS {
 
         this.ws_handlers = {
             onopen: () => {
+                console.log('ws aberto');
                 this.ativo = true;
             },
             onerror: (error) => console.error(error),
@@ -42,7 +43,8 @@ class FilaWS {
             },
             onmessage: (message) => {
                 var message = JSON.parse(message.data);
-                // window.m = message;
+                console.log('message ws:', message)
+                window.m = message;
                 if (message.type == 'reload' && message.value == EventBus.variaveis.estabelecimento)
                     EventBus.$emit('select_estabelecimento');
             }

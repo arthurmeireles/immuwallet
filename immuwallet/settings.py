@@ -81,6 +81,12 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+EMAIL_FROM = os.environ.get('EMAIL_FROM', 'ddddiegolima@gmail.com')
+EMAIL_SENDGRID_KEY = os.environ.get('SENDGRID_API_KEY')
+
+if not EMAIL_SENDGRID_KEY:
+    print('>>> EMAIL_SENDGRID_KEY não setado, não poderei mandar emails.')
+
 INSTALLED_APPS = DEFAULT_APPS + LOCAL_APPS
 
 MIDDLEWARE = [

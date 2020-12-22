@@ -12,5 +12,7 @@
 ### Com docker-compose
 
 1. subir todos os containers com `docker-compose up`
+1. abrir um terminal com `docker-compose run web bash`
+1. rodar as migrações e carregar fixtures conforme instruções acima.
 
 Essa aplicação também está rodando no [Heroku](https://immuwallet.herokuapp.com/).

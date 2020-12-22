@@ -100,6 +100,7 @@ pyrsistent==0.17.3
 python-crontab==2.5.1
 python-dateutil==2.8.1
 python-dotenv==0.15.0
+python-http-client==3.3.1
 python-stdnum==1.14
 python3-openid==3.2.0
 pytz==2020.4
@@ -113,11 +114,13 @@ requests-oauthlib==1.3.0
 ruamel.yaml==0.16.12
 ruamel.yaml.clib==0.2.2
 Send2Trash==1.5.0
+sendgrid==6.4.8
 sentry-sdk==0.19.5
 service-identity==18.1.0
 six==1.11.0
 sqlparse==0.4.1
 standardjson==0.3.1
+starkbank-ecdsa==1.1.0
 terminado==0.9.1
 testpath==0.4.4
 texttable==1.6.3

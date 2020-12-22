@@ -34,6 +34,7 @@ export default {
   mounted() {
     var self = this;
     EventBus.$on("select_estabelecimento", function () {
+      console.log("on event");
       self.update_horas_marcadas(EventBus.variaveis.estabelecimento);
     });
   },
@@ -53,23 +54,39 @@ export default {
       return cor;
     },
     update_horas_marcadas(estabelecimento) {
+      var self = this;
       var params = {
         estabelecimento,
       };
 
       var url = "/api/horas_marcadas/?" + urlencode(params);
 
-      fetch(url)
-        .then((res) => {
-          if (res.ok) {
-            return res.json();
-          } else {
-            return [];
-          }
-        })
-        .then((data) => {
-          this.horas_marcadas = data;
-        });
+      var settings = {
+        url,
+        method: "GET",
+        timeout: 0,
+        // headers: {
+        //   Cookie:
+        //     `csrftoken=${getCookie("csrftoken")}`,
+        // },
+      };
+
+      $.ajax(settings).done(function (response) {
+        console.log(response);
+        self.horas_marcadas = response;
+      });
+
+      // fetch(url)
+      //   .then((res) => {
+      //     if (res.ok) {
+      //       return res.json();
+      //     } else {
+      //       return [];
+      //     }
+      //   })
+      //   .then((data) => {
+      //     this.horas_marcadas = data;
+      //   });
     },
     click(hora) {
       if (usuario_perfil == PERFIL.PACIENTE) return;

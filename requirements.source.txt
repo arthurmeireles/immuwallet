@@ -18,3 +18,4 @@ celery
 django_heroku
 django-allauth
 docker-compose
+sendgrid
